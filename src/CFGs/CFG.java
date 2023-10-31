@@ -1,33 +1,32 @@
 import java.util.Set;
 
 public class CFG {
-    private Set<Strings> nonTerminals = [];
-    private Set<Strings> terminals = [];
-    private Set<Production> productions = [];
-    private String startSymbol = "";
+    private Set<String> nonTerminals;
+    private Set<String> terminals;
+    private Set<Production> productions;
+    private String startSymbol;
 
-    public CFG(Set<Strings> nonTerminals, Set<Strings> terminals, 
-                    Set<Production> productions, String startSymbol) {
+    public CFG(Set<String> nonTerminals, Set<String> terminals, Set<Production> productions, String startSymbol) {
         this.nonTerminals = nonTerminals;
         this.terminals = terminals;
         this.productions = productions;
-        this.startSymbol = startSymbol
+        this.startSymbol = startSymbol;
     }
 
-    public getNonTerminals() {
+    public Set<String> getNonTerminals() {
         return this.nonTerminals;
     }
-    public 
 
-    public getTerminals() {
+
+    public Set<String> getTerminals() {
         return this.terminals;
     }
 
-    public getProductions() {
+    public Set<Production> getProductions() {
         return this.productions;
     }
 
-    public getStartSymbol() {
+    public String getStartSymbol() {
         return this.startSymbol;
     }
 }

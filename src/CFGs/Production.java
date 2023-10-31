@@ -1,23 +1,18 @@
-import.java.util.ArrayList;
+import java.util.ArrayList;
 public class Production {
     private String nonTerminal;
-    private ArrayList output;
+    private ArrayList<String> output;
     
-    public Production (String nonTerminal, ArrayList output) {
-        if (nonTerminal.equals("")) {
-            this.nonTerminal = "";
-            this.output = [];
-        } else {
-            this.nonTerminal = nonTerminal;
-            this.output = output;
-        }
+    public Production (String nonTerminal, ArrayList<String> output) {
+        this.nonTerminal = nonTerminal;
+        this.output = output;
     }
 
-    public getNonTerminal() {
+    public String getNonTerminal() {
         return this.nonTerminal;
     }
 
-    public getOutput() {
+    public ArrayList<String> getOutput() {
         return this.output;
     }
 
