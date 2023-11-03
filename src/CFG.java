@@ -1,4 +1,7 @@
 import java.util.Set;
+import java.util.ArrayList;
+
+
 import java.util.HashSet;
 import java.util.HashMap;
 public class CFG {
@@ -44,32 +47,59 @@ public class CFG {
 
     private Set<Integer> createStates() {
         Set<Integer> states = new HashSet<Integer>();
-
+        Integer defaultPDA_States = 3;
+        Integer extraStatesFromProds = 0;
+        for (Production production : this.productions) {
+            extraStatesFromProds += production.getOutput().size();
+        }
+        for (int i=0; i<=(defaultPDA_States + extraStatesFromProds); i++) {
+            states.add(i);
+        }
         return states;
     }
 
     private Set<String> createInputAlphabet() {
-        Set<String> inputAlphabet = new HashSet<String>();
-
+        Set<String> inputAlphabet = this.terminals;
         return inputAlphabet;
     }
 
     private Set<String> createStackAlphabet() {
         Set<String> stackAlphabet = new HashSet<String>();
-
+        stackAlphabet.addAll(this.nonTerminals);
+        stackAlphabet.addAll(this.terminals);
         return stackAlphabet;
     }
 
     private HashMap<String, PDA_Edge> createEdgeMap() {
         HashMap<String, PDA_Edge> edgeMap = new HashMap<String, PDA_Edge>();
-
+        for (String terminal : this.terminals) {
+            PDA_Edge edge = new PDA_Edge(2, StackAction.POP, terminal, 2);
+            edgeMap.put(terminal, edge);
+        }
         return edgeMap;
     }
 
     private Set<PDA_Edge> createEpsilonTransitions() {
-        Set<PDA_Edge> epsilonTransitions = new HashSet<PDA_Edge>();
-
+        Set<PDA_Edge> epsilonTransitions = createDefaultEdges();
+        Integer nextStateNumber = 4;
+        for (Production production : this.productions) {
+            String nonTerminal = production.getNonTerminal();
+            ArrayList<String> output = production.getOutput();
+            epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, nonTerminal, nextStateNumber));
+            for (int i=0; i<output.size(); i++) {
+                epsilonTransitions.add(new PDA_Edge(nextStateNumber, StackAction.PUSH, output.get(i), ++nextStateNumber));
+            }
+        }
         return epsilonTransitions;
+    }
+
+    private Set<PDA_Edge> createDefaultEdges() {
+        String stackSymbol = "⊥";
+        Set<PDA_Edge> defaultEdges = new HashSet<PDA_Edge>();
+        defaultEdges.add(new PDA_Edge(0, StackAction.PUSH, stackSymbol, 1));
+        defaultEdges.add(new PDA_Edge(1, StackAction.PUSH, this.startSymbol, 2));
+        defaultEdges.add(new PDA_Edge(2, StackAction.POP, stackSymbol, 3));
+        return defaultEdges;
     }
 
     private Integer createStartState() {
@@ -78,8 +108,7 @@ public class CFG {
     }
 
     private Integer createFinalState() {
-        Integer finalState = 0; // placeholder
-
+        Integer finalState = 3;
         return finalState;
     }
 

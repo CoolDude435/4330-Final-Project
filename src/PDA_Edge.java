@@ -1,15 +1,10 @@
 public class PDA_Edge {
-    enum StackAction{
-        PUSH,
-        POP,
-        NOTHING
-    }
-    private String startState;
+    private Integer startState;
     private StackAction stackAction;
     private String stackUpdate;
-    private String destState;
+    private Integer destState;
 
-    public PDA_Edge (String startState, StackAction stackAction, String stackUpdate, String destState) {
+    public PDA_Edge (Integer startState, StackAction stackAction, String stackUpdate, Integer destState) {
         this.startState = startState;
         this.stackAction = stackAction;
         this.stackUpdate = stackUpdate;

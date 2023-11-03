@@ -8,12 +8,14 @@ public class PDA {
     private Set<PDA_Edge> epsilonTransitions;
     private Integer startState;
     private Integer finalState;
+    final private String stackSymbol = "⊥";
 
     public PDA (Set<Integer> states, Set<String> inputAlphabet, Set<String> stackAlphabet, 
             HashMap<String, PDA_Edge> edgeMap, Set<PDA_Edge> epsilonTransitions, Integer startState, Integer finalState) {
         this.states = states;
         this.inputAlphabet = inputAlphabet;
         this.stackAlphabet = stackAlphabet;
+        this.stackAlphabet.add(stackSymbol);
         this.edgeMap = edgeMap;
         this.epsilonTransitions = epsilonTransitions;
         this.startState = startState;
