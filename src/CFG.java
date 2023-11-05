@@ -1,4 +1,5 @@
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.ArrayList;
 
 
@@ -112,7 +113,145 @@ public class CFG {
         return finalState;
     }
 
+    public CFG convertToCNF() {
+        
+        return null;
+    }
 
+    private void removeUnitProds() {
+        for (Production production : this.productions) {
+            String nonTerminal = production.getNonTerminal();
+            ArrayList<String> output = production.getOutput();
+            boolean isUnitProd = (output.size()==1) && !(this.terminals.contains(output.get(0)));
+            if (isUnitProd) {
+                String unitProd = output.get(0);
+                for (Production p : this.productions) {
+                    if (p.getNonTerminal().equals(unitProd)) {
+                        Production newProd = new Production(nonTerminal, p.getOutput());
+                        this.productions.add(newProd);
+                    }
+                }
+                this.productions.remove(production);
+            }
+        }
+    }
+
+    private void removeEmptyProds() {
+        Set<String> emptyProds = new HashSet<String>();
+        for(Production production : this.productions) {
+            String nonTerminal = production.getNonTerminal();
+            ArrayList<String> output = production.getOutput();
+            if (output.size()==0) {
+                emptyProds.add(nonTerminal);
+            }
+        }
+
+        Set<Production> newProds = new HashSet<Production>();
+        for(Production production : this.productions) {
+            String nonTerminal = production.getNonTerminal();
+            ArrayList<String> output = production.getOutput();
+            ArrayList<String> outputClone = (ArrayList<String>) output.clone();
+            for(int i=0; i<output.size(); i++) {
+                if (emptyProds.contains(outputClone.get(i))) {
+                    outputClone.remove(i);
+                    i--;
+                }
+            }
+            if (outputClone.size() != 0) {
+                Production newProd = new Production(nonTerminal, outputClone);
+                newProds.add(newProd);
+            }
+        }
+
+        removeUnitProds();
+    }
+
+    private void replaceTerminals() {
+        for(String terminal : this.terminals) {
+            String newNonTerminal = createNewNonTerminal();
+            this.nonTerminals.add(newNonTerminal);
+
+            ArrayList<String> termProdArray = new ArrayList<String>();
+            termProdArray.add(terminal);
+
+            Production termProd = new Production(newNonTerminal, termProdArray);
+            this.productions.add(termProd);
+
+            for(Production production : this.productions) {
+                ArrayList<String> output = production.getOutput();
+
+                for (int i=0; i<output.size(); i++) {
+                    if (output.get(i).equals(terminal)) {
+                        output.set(i, newNonTerminal);
+                    }
+                }
+            }
+        }
+    }
+
+    private void splitProds() {
+        for (Production production : this.productions) {
+            String nonTerminal = production.getNonTerminal();
+            ArrayList<String> output = production.getOutput();
+            if (output.size() > 2) {
+                while (output.size() > 2) {
+                    String newNonTerminal = createNewNonTerminal();
+                    this.nonTerminals.add(newNonTerminal);
+
+                    ArrayList<String> newOutput = new ArrayList<String>();
+                    newOutput.add(output.remove(0));
+                    newOutput.add(newNonTerminal);
+                    
+                    Production newSplitProduction = new Production(nonTerminal, newOutput);
+                    nonTerminal = newNonTerminal;
+                }
+                Production finalSlitProduction = new Production(nonTerminal, output);
+                this.productions.remove(production);
+            }
+        }
+    } 
+
+    private String createNewNonTerminal() {
+        Integer dupCnt = 0;
+        Integer letterCnt = 1;
+        String newNonTerminal = "A";
+        while(this.nonTerminals.contains(newNonTerminal) || this.terminals.contains(newNonTerminal)) {
+            letterCnt++;
+            if (letterCnt == 27) {
+                letterCnt -= 26;
+                dupCnt++;
+            }
+            newNonTerminal = duplicateLetter(letterCnt, Character.toString(letterCnt+40));
+        }
+        return newNonTerminal;
+    }
+
+    private String createNewNonTerminal(AtomicInteger duplicateCount, AtomicInteger letterCount) {
+        Set<String> nonTerminals = this.nonTerminals;
+        Set<String> terminals = this.terminals;
+        Integer dupCnt = duplicateCount.intValue();
+        Integer letterCnt = letterCount.intValue();
+        String newNonTerminal = duplicateLetter(dupCnt, Character.toString(letterCnt+40));
+        while ((nonTerminals.contains(newNonTerminal)) || (terminals.contains(newNonTerminal))) {
+            letterCnt++;
+            if (letterCnt >= 27) {
+                letterCnt -= 26;
+                dupCnt++;
+            }
+            newNonTerminal = duplicateLetter(dupCnt, Character.toString(letterCnt+40));
+        }
+        duplicateCount = new AtomicInteger(dupCnt);
+        letterCount = new AtomicInteger(letterCnt);
+        return newNonTerminal;
+    }
+
+    private static String duplicateLetter(Integer numDuplicates, String letter) {
+        String output = "";
+        for (int i=0; i<=numDuplicates; i++) {
+            output = output + letter;
+        }
+        return output;
+    }
 
     public static void main(String Args[]) {
         Set<String> ran = new HashSet<String>();

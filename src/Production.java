@@ -16,4 +16,16 @@ public class Production {
         return this.output;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Production) {
+            Production production = (Production) o;
+            boolean equalNonTerminal = this.nonTerminal.equals(production.getNonTerminal());
+            boolean equalOutput = this.output.equals(production.getOutput());
+            if (equalNonTerminal && equalOutput) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

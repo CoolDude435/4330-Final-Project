@@ -11,4 +11,18 @@ public class PDA_Edge {
         this.destState = destState;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof PDA_Edge) {
+            PDA_Edge edge = (PDA_Edge) o;
+            boolean equalStartState = this.startState == edge.startState;
+            boolean equalStackAction = this.stackAction == edge.stackAction;
+            boolean equalStackUpdate = this.stackUpdate.equals(edge.stackUpdate);
+            boolean equalDestState = this.destState == edge.destState;
+            if (equalStartState && equalStackAction && equalStackUpdate && equalDestState) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
