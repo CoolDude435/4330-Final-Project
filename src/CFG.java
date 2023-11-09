@@ -113,9 +113,11 @@ public class CFG {
         return finalState;
     }
 
-    public CFG convertToCNF() {
-        
-        return null;
+    public void convertToCNF() {
+        replaceTerminals();
+        removeUnitProds();
+        removeEmptyProds();
+        splitProds();
     }
 
     private void removeUnitProds() {
