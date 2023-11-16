@@ -11,6 +11,22 @@ public class PDA_Edge {
         this.destState = destState;
     }
 
+    public Integer getStartState() {
+        return this.startState;
+    }
+
+    public StackAction getStackAction() {
+        return this.stackAction;
+    }
+
+    public String getStackUpdate() {
+        return this.stackUpdate;
+    }
+
+    public Integer getDestState() {
+        return this.destState;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o instanceof PDA_Edge) {
