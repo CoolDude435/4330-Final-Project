@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -17,14 +18,20 @@ public class PDA_Visulization {
     }
 
     public void createGraphFile() {
-        //File f = new File
+        String currentDir = System.getProperty("user.dir");
+        File gvFile = new File(currentDir + "\\" + this.graphName + ".gv");
+        ArrayList<String> headerLines = createGVHeader();
+        ArrayList<String> fileLines = createGVEdges();
+        String fileLastLine = "}";
+
         try {
-            FileWriter fw = new FileWriter(this.graphName+".gv");
-
-            ArrayList<String> headerLines = createGVHeader();
-            ArrayList<String> fileLines = createGVEdges();
-            String fileLastLine = "}";
-
+            gvFile.createNewFile();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        try {
+            FileWriter fw = new FileWriter(gvFile);
             String newLine = System.lineSeparator();
 
             for (String line : headerLines) {
@@ -36,7 +43,7 @@ public class PDA_Visulization {
                 fw.write(newLine);
             }
             fw.write(fileLastLine);
-
+            fw.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
