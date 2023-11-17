@@ -5,12 +5,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-
-
 public class PDA_Visulization {
     private PDA pda;
     private String graphName;
-    //private FileWriter fw;
 
     public PDA_Visulization(PDA pda, String graphName) {
         this.pda = pda;
