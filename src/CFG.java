@@ -228,6 +228,7 @@ public class CFG {
         return newNonTerminal;
     }
 
+/*
     private String createNewNonTerminal(AtomicInteger duplicateCount, AtomicInteger letterCount) {
         Set<String> nonTerminals = this.nonTerminals;
         Set<String> terminals = this.terminals;
@@ -246,6 +247,7 @@ public class CFG {
         letterCount = new AtomicInteger(letterCnt);
         return newNonTerminal;
     }
+*/
 
     private static String duplicateLetter(Integer numDuplicates, String letter) {
         String output = "";
