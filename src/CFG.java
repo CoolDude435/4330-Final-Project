@@ -153,6 +153,7 @@ public class CFG {
             String nonTerminal = production.getNonTerminal();
             ArrayList<String> output = production.getOutput();
             ArrayList<String> outputClone = (ArrayList<String>) output.clone();
+            //this should always be a safe cast since output in Product is a ArrayList<String>
             for(int i=0; i<output.size(); i++) {
                 if (emptyProds.contains(outputClone.get(i))) {
                     outputClone.remove(i);

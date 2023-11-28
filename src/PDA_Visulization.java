@@ -8,6 +8,8 @@ import java.io.IOException;
 public class PDA_Visulization {
     private PDA pda;
     private String graphName;
+    private ArrayList<String> gvHeader;
+    private ArrayList<String> gvEdges;
 
     public PDA_Visulization(PDA pda, String graphName) {
         this.pda = pda;
@@ -17,14 +19,17 @@ public class PDA_Visulization {
     public void createGraphFile() {
         String currentDir = System.getProperty("user.dir");
         File gvFile = new File(currentDir + "\\" + this.graphName + ".gv");
-        ArrayList<String> headerLines = createGVHeader();
-        ArrayList<String> fileLines = createGVEdges();
+        if (this.gvHeader == null) createGVHeader();
+        if (this.gvEdges == null) createGVEdges();
+        ArrayList<String> headerLines = this.gvHeader;
+        ArrayList<String> fileLines = this.gvEdges;
         String fileLastLine = "}";
 
         try {
             gvFile.createNewFile();
         } catch (IOException e) {
             // TODO Auto-generated catch block
+            System.out.println("Error: File already exists/can't create file");
             e.printStackTrace();
         }
         try {
@@ -43,65 +48,72 @@ public class PDA_Visulization {
             fw.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
+            System.out.println("Error: Could not write to file");
             e.printStackTrace();
         }
         
         
     }
 
-    private ArrayList<String> createGVHeader() {
-        ArrayList<String> headerLines = new ArrayList<String>();
-        headerLines.add("digraph " + this.graphName + " {");
-        headerLines.add("rankdir = LR;");
-        headerLines.add("hidden [shape = plaintext, label = \"\"];");
-        headerLines.add("node [shape = doublecircle];");
-        headerLines.add(this.pda.getFinalState()+";");
-        headerLines.add("node [shape = circle];");
-        headerLines.add("hidden -> 0;");
-        return headerLines;
+    public void createGVHeader() {
+        if (this.gvHeader == null) {
+            ArrayList<String> headerLines = new ArrayList<String>();
+            headerLines.add("digraph " + this.graphName + " {");
+            headerLines.add("rankdir = LR;");
+            headerLines.add("hidden [shape = plaintext, label = \"\"];");
+            headerLines.add("node [shape = doublecircle];");
+            headerLines.add(this.pda.getFinalState()+";");
+            headerLines.add("node [shape = circle];");
+            headerLines.add("hidden -> 0;");
+            this.gvHeader = headerLines;
+        }
     }
 
-    private ArrayList<String> createGVEdges() {
-        ArrayList<String> fileLines = new ArrayList<String>();
-        HashMap<String, PDA_Edge> edgeMap = this.pda.getEdgeMap();
-        Set<String> inputs = edgeMap.keySet();
-        Set<PDA_Edge> epsilonTransitions = this.pda.getEpsilonTransitions();
+    public void createGVEdges() {
+        if (this.gvEdges == null) {
+            ArrayList<String> fileLines = new ArrayList<String>();
+            HashMap<String, PDA_Edge> edgeMap = this.pda.getEdgeMap();
+            Set<String> inputs = edgeMap.keySet();
+            Set<PDA_Edge> epsilonTransitions = this.pda.getEpsilonTransitions();
 
-        for (String input : inputs) {
-            PDA_Edge edge = edgeMap.get(input);
-            String graphEdge = edge.getStartState() + " -> " + edge.getDestState();
-            String stackAction = "";
-            
-            if (edge.getStackAction() == StackAction.PUSH) {
-                stackAction = "+";
-            }
-            else {
-                stackAction = "-";
+            for (String input : inputs) {
+                PDA_Edge edge = edgeMap.get(input);
+                String graphEdge = edge.getStartState() + " -> " + edge.getDestState();
+                String stackAction = "";
+
+                if (edge.getStackAction() == StackAction.PUSH) {
+                    stackAction = "+";
+                }
+                else {
+                    stackAction = "-";
+                }
+
+                String edgeLabel = " [label = \"\'" + input + "\', " + stackAction + edge.getStackUpdate() + "\"];";
+                String fileLine = graphEdge + edgeLabel;
+                fileLines.add(fileLine);
             }
 
-            String edgeLabel = " [label = \"\'" + input + "\', " + stackAction + edge.getStackUpdate() + "\"];";
-            String fileLine = graphEdge + edgeLabel;
-            fileLines.add(fileLine);
+            for (PDA_Edge edge : epsilonTransitions) {
+                String graphEdge = edge.getStartState() + " -> " + edge.getDestState();
+                String stackAction = "";
+
+                if (edge.getStackAction() == StackAction.PUSH) {
+                    stackAction = "+";
+                }
+                else {
+                    stackAction = "-";
+                }
+
+                String edgeLabel = " [label = \". , " + stackAction + edge.getStackUpdate() + "\"];";
+                String fileLine = graphEdge + edgeLabel;
+                fileLines.add(fileLine);
+            }
+
+            this.gvEdges = fileLines;
         }
-
-        for (PDA_Edge edge : epsilonTransitions) {
-            String graphEdge = edge.getStartState() + " -> " + edge.getDestState();
-            String stackAction = "";
-
-            if (edge.getStackAction() == StackAction.PUSH) {
-                stackAction = "+";
-            }
-            else {
-                stackAction = "-";
-            }
-
-            String edgeLabel = " [label = \". , " + stackAction + edge.getStackUpdate() + "\"];";
-            String fileLine = graphEdge + edgeLabel;
-            fileLines.add(fileLine);
-        }
-
-        return fileLines;
     }
+
+
 }
 
 
