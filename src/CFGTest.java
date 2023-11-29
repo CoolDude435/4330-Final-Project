@@ -131,7 +131,17 @@ public class CFGTest {
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
     public void createEpsilonTransitionsTestPalindrome() {
+        PDA_Edge edge1 = new PDA_Edge(0, StackAction.PUSH, "⊥", 1);
+        PDA_Edge edge2 = new PDA_Edge(1, StackAction.PUSH, "S", 2);
+        PDA_Edge edge3 = new PDA_Edge(2, StackAction.POP, "⊥", 3);
+
+        ArrayList<PDA_Edge> expected = new ArrayList<PDA_Edge>();
+        expected.add(edge1);
+        expected.add(edge2);
+        expected.add(edge3);
+        ArrayList<PDA_Edge> actual = palindrome.createEpsilonTransitions();
         
+        assertEquals(expected, actual);
     }
 
     @Test
