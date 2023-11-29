@@ -137,10 +137,14 @@ public class CFGTest {
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
     public void createDefaultEdgesTestPalindrome() {
+        PDA_Edge edge1 = new PDA_Edge(0, StackAction.PUSH, "⊥", 1);
+        PDA_Edge edge2 = new PDA_Edge(1, StackAction.PUSH, "S", 2);
+        PDA_Edge edge3 = new PDA_Edge(2, StackAction.POP, "⊥", 3);
+
         Set<PDA_Edge> expected = new HashSet<PDA_Edge>();
-        expected.add(new PDA_Edge(0, StackAction.PUSH, "⊥", 1));
-        expected.add(new PDA_Edge(1, StackAction.PUSH, "S", 2));
-        expected.add(new PDA_Edge(2, StackAction.POP, "⊥", 3));
+        expected.add(edge1);
+        expected.add(edge2);
+        expected.add(edge3);
         Set<PDA_Edge> actual = palindrome.createDefaultEdges();
         for (PDA_Edge e : actual) {
             System.out.println(e.getStartState() + ", " + e.getStackAction() + ", " + e.getStackUpdate() + ", " + e.getDestState());
@@ -150,6 +154,19 @@ public class CFGTest {
             System.out.println(e.getStartState() + ", " + e.getStackAction() + ", " + e.getStackUpdate() + ", " + e.getDestState());
             //System.out.flush();
         }
+        boolean b1 = actual.contains(edge1);
+        boolean b2 = actual.contains(edge2);
+        boolean b3 = actual.contains(edge3);
+        System.out.println(b1 + ", " + b2 + ", " + b3);
+
+        PDA_Edge e1 = new PDA_Edge(0, StackAction.PUSH, "⊥", 1);
+        PDA_Edge e2 = new PDA_Edge(0, StackAction.PUSH, "⊥", 1);
+
+        boolean equalStartState = e1.getStartState() == e2.getStartState();
+        boolean equalStackAction = e1.getStackAction() == e2.getStackAction();
+        boolean equalStackUpdate = e1.getStackUpdate().equals(e2.getStackUpdate());
+        boolean equalDestState = e1.getDestState() == e2.getDestState();
+        System.out.println(equalStartState + ", " + equalStackAction + ", " + equalStackUpdate + ", " + equalDestState);
         System.out.println(actual.equals(expected));
         //assertEquals(expected, actual);
         //assertTrue(expected.equals(actual));

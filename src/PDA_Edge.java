@@ -35,7 +35,6 @@ public class PDA_Edge {
             boolean equalStackAction = this.stackAction == edge.getStackAction();
             boolean equalStackUpdate = this.stackUpdate.equals(edge.getStackUpdate());
             boolean equalDestState = this.destState == edge.getDestState();
-            System.out.println(equalStartState + ", " + equalStackAction + ", " + equalStackUpdate + ", " + equalDestState);
             if (equalStartState && equalStackAction && equalStackUpdate && equalDestState) {
                 return true;
             }
