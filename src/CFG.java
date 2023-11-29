@@ -1,10 +1,10 @@
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.ArrayList;
-
-
 import java.util.HashSet;
 import java.util.HashMap;
+
+//import java.util.concurrent.atomic.AtomicInteger;
+
 public class CFG {
     private Set<String> nonTerminals;
     private Set<String> terminals;
@@ -46,7 +46,7 @@ public class CFG {
         return pda;
     }
 
-    private Set<Integer> createStates() {
+    public Set<Integer> createStates() {
         Set<Integer> states = new HashSet<Integer>();
         Integer defaultPDA_States = 3;
         Integer extraStatesFromProds = 0;
@@ -59,19 +59,19 @@ public class CFG {
         return states;
     }
 
-    private Set<String> createInputAlphabet() {
+    public Set<String> createInputAlphabet() {
         Set<String> inputAlphabet = this.terminals;
         return inputAlphabet;
     }
 
-    private Set<String> createStackAlphabet() {
+    public Set<String> createStackAlphabet() {
         Set<String> stackAlphabet = new HashSet<String>();
         stackAlphabet.addAll(this.nonTerminals);
         stackAlphabet.addAll(this.terminals);
         return stackAlphabet;
     }
 
-    private HashMap<String, PDA_Edge> createEdgeMap() {
+    public HashMap<String, PDA_Edge> createEdgeMap() {
         HashMap<String, PDA_Edge> edgeMap = new HashMap<String, PDA_Edge>();
         for (String terminal : this.terminals) {
             PDA_Edge edge = new PDA_Edge(2, StackAction.POP, terminal, 2);
@@ -80,7 +80,7 @@ public class CFG {
         return edgeMap;
     }
 
-    private Set<PDA_Edge> createEpsilonTransitions() {
+    public Set<PDA_Edge> createEpsilonTransitions() {
         Set<PDA_Edge> epsilonTransitions = createDefaultEdges();
         Integer nextStateNumber = 4;
         for (Production production : this.productions) {
@@ -94,7 +94,7 @@ public class CFG {
         return epsilonTransitions;
     }
 
-    private Set<PDA_Edge> createDefaultEdges() {
+    public Set<PDA_Edge> createDefaultEdges() {
         String stackSymbol = "⊥";
         Set<PDA_Edge> defaultEdges = new HashSet<PDA_Edge>();
         defaultEdges.add(new PDA_Edge(0, StackAction.PUSH, stackSymbol, 1));
@@ -103,16 +103,20 @@ public class CFG {
         return defaultEdges;
     }
 
-    private Integer createStartState() {
+    public Integer createStartState() {
         Integer startState = 0;
         return startState;
     }
 
-    private Integer createFinalState() {
+    public Integer createFinalState() {
         Integer finalState = 3;
         return finalState;
     }
 
+
+
+
+    
     public void convertToCNF() {
         replaceTerminals();
         removeUnitProds();
