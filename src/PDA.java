@@ -1,4 +1,5 @@
 import java.util.Set;
+import java.util.HashSet;
 import java.util.HashMap;
 public class PDA {
     private Set<Integer> states;
@@ -80,5 +81,24 @@ public class PDA {
 
     public String getStackSymbol() {
         return this.stackSymbol;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof PDA) {
+            PDA pda = (PDA) o;
+            boolean equalStates = this.states.equals(pda.getStates());
+            boolean equalInputAlphabet = this.inputAlphabet.equals(pda.getInputAlphabet());
+            boolean equalStackAlphabet = this.stackAlphabet.equals(pda.getStackAlphabet());
+            boolean equalEdgeMap = this.edgeMap.equals(pda.getEdgeMap());
+            boolean equalEpsilonsTrans = this.epsilonTransitions.equals(pda.getEpsilonTransitions());
+            boolean equalStartState = this.startState.equals(pda.getStartState());
+            boolean equalFinalState = this.finalState.equals(pda.getFinalState());
+            if (equalStates && equalInputAlphabet && equalStackAlphabet && equalEdgeMap &&
+                equalEpsilonsTrans && equalStartState && equalFinalState) {
+                return true;
+            }
+        }
+        return false;
     }
 }
