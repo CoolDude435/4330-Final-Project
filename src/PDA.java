@@ -1,18 +1,19 @@
 import java.util.Set;
 import java.util.HashSet;
 import java.util.HashMap;
+import java.util.ArrayList;
 public class PDA {
     private Set<Integer> states;
     private Set<String> inputAlphabet;
     private Set<String> stackAlphabet;
     private HashMap<String, PDA_Edge> edgeMap;
-    private Set<PDA_Edge> epsilonTransitions;
+    private ArrayList<PDA_Edge> epsilonTransitions;
     private Integer startState;
     private Integer finalState;
     final private String stackSymbol = "⊥";
 
     public PDA (Set<Integer> states, Set<String> inputAlphabet, Set<String> stackAlphabet, 
-            HashMap<String, PDA_Edge> edgeMap, Set<PDA_Edge> epsilonTransitions, Integer startState, Integer finalState) {
+            HashMap<String, PDA_Edge> edgeMap, ArrayList<PDA_Edge> epsilonTransitions, Integer startState, Integer finalState) {
         this.states = states;
         this.inputAlphabet = inputAlphabet;
         this.stackAlphabet = stackAlphabet;
@@ -55,11 +56,11 @@ public class PDA {
         return this.edgeMap;
     }
 
-    public void setEpsilonTransitions (Set<PDA_Edge> epsilonTransitions) {
+    public void setEpsilonTransitions (ArrayList<PDA_Edge> epsilonTransitions) {
         this.epsilonTransitions = epsilonTransitions;
     }
 
-    public Set<PDA_Edge> getEpsilonTransitions () {
+    public ArrayList<PDA_Edge> getEpsilonTransitions () {
         return this.epsilonTransitions;
     }
 

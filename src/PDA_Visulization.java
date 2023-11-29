@@ -74,7 +74,7 @@ public class PDA_Visulization {
             ArrayList<String> fileLines = new ArrayList<String>();
             HashMap<String, PDA_Edge> edgeMap = this.pda.getEdgeMap();
             Set<String> inputs = edgeMap.keySet();
-            Set<PDA_Edge> epsilonTransitions = this.pda.getEpsilonTransitions();
+            ArrayList<PDA_Edge> epsilonTransitions = this.pda.getEpsilonTransitions();
 
             for (String input : inputs) {
                 PDA_Edge edge = edgeMap.get(input);
