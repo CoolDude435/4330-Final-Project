@@ -116,7 +116,7 @@ public class CFGTest {
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
     public void createStackAlphabetTestPalindrome() {
-        String[] stackAlpha = {"a","b", "S"};
+        String[] stackAlpha = {"a","b","S"};
         Set<String> expected = new HashSet<String>(Arrays.asList(stackAlpha));
         Set<String> actual = palindrome.createStackAlphabet();
         assertEquals(expected, actual);
@@ -137,7 +137,22 @@ public class CFGTest {
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
     public void createDefaultEdgesTestPalindrome() {
-        
+        Set<PDA_Edge> expected = new HashSet<PDA_Edge>();
+        expected.add(new PDA_Edge(0, StackAction.PUSH, "⊥", 1));
+        expected.add(new PDA_Edge(1, StackAction.PUSH, "S", 2));
+        expected.add(new PDA_Edge(2, StackAction.POP, "⊥", 3));
+        Set<PDA_Edge> actual = palindrome.createDefaultEdges();
+        for (PDA_Edge e : actual) {
+            System.out.println(e.getStartState() + ", " + e.getStackAction() + ", " + e.getStackUpdate() + ", " + e.getDestState());
+            //System.out.flush();
+        }
+        for (PDA_Edge e : expected) {
+            System.out.println(e.getStartState() + ", " + e.getStackAction() + ", " + e.getStackUpdate() + ", " + e.getDestState());
+            //System.out.flush();
+        }
+        System.out.println(actual.equals(expected));
+        //assertEquals(expected, actual);
+        //assertTrue(expected.equals(actual));
     }
 
     @Test
