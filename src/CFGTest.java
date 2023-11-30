@@ -92,7 +92,35 @@ public class CFGTest {
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
     public void convertToPDATestPalindrome() {
+        Integer[] states = {0,1,2,3,4,5,6,7,8,9};
+        Set<Integer> States = new HashSet<Integer>(Arrays.asList(states));
+        String[] inputAlpha = {"a","b"};
+        Set<String> inputAlphabet = new HashSet<String>(Arrays.asList(inputAlpha));
+        String[] stackAlpha = {"a","b","S"};
+        Set<String> stackAlphabet = new HashSet<String>(Arrays.asList(stackAlpha));
+        HashMap<String, PDA_Edge> edgeMap = new HashMap<String, PDA_Edge>();
+        edgeMap.put("a", new PDA_Edge(2, StackAction.POP, "a", 2));
+        edgeMap.put("b", new PDA_Edge(2, StackAction.POP, "b", 2));
+        ArrayList<PDA_Edge> epsilonTransitions = new ArrayList<PDA_Edge>();
+        epsilonTransitions.add(new PDA_Edge(0, StackAction.PUSH, "⊥", 1));
+        epsilonTransitions.add(new PDA_Edge(1, StackAction.PUSH, "S", 2));
+        epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, "⊥", 3));
+        epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, "S", 4));
+        epsilonTransitions.add(new PDA_Edge(4, StackAction.PUSH, "a", 5));
+        epsilonTransitions.add(new PDA_Edge(5, StackAction.PUSH, "S", 6));
+        epsilonTransitions.add(new PDA_Edge(6, StackAction.PUSH, "a", 2));
+        epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, "S", 7));
+        epsilonTransitions.add(new PDA_Edge(7, StackAction.PUSH, "b", 8));
+        epsilonTransitions.add(new PDA_Edge(8, StackAction.PUSH, "S", 9));
+        epsilonTransitions.add(new PDA_Edge(9, StackAction.PUSH, "b", 2));
+        epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, "S", 2));
+        Integer startState = 0;
+        Integer finalState = 3;
 
+        PDA expected = new PDA(States, inputAlphabet, stackAlphabet, edgeMap, epsilonTransitions, startState, finalState);
+        PDA actual = this.palindrome.convertToPDA();
+
+        assertEquals(expected, actual);
     }
     
     @Test
@@ -125,6 +153,12 @@ public class CFGTest {
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
     public void createEdgeMapTestPalindrome() {
+        HashMap<String, PDA_Edge> expected = new HashMap<String, PDA_Edge>();
+        expected.put("a", new PDA_Edge(2, StackAction.POP, "a", 2));
+        expected.put("b", new PDA_Edge(2, StackAction.POP, "b", 2));
+        HashMap<String, PDA_Edge> actual = this.palindrome.createEdgeMap();
+        assertEquals(expected, actual);
+
     }
 
     @Test
