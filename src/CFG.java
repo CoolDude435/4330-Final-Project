@@ -8,10 +8,10 @@ import java.util.HashMap;
 public class CFG {
     private Set<String> nonTerminals;
     private Set<String> terminals;
-    private Set<Production> productions;
+    private ArrayList<Production> productions;
     private String startSymbol;
 
-    public CFG(Set<String> nonTerminals, Set<String> terminals, Set<Production> productions, String startSymbol) {
+    public CFG(Set<String> nonTerminals, Set<String> terminals, ArrayList<Production> productions, String startSymbol) {
         this.nonTerminals = nonTerminals;
         this.terminals = terminals;
         this.productions = productions;
@@ -26,7 +26,7 @@ public class CFG {
         return this.terminals;
     }
 
-    public Set<Production> getProductions() {
+    public ArrayList<Production> getProductions() {
         return this.productions;
     }
 
@@ -86,10 +86,17 @@ public class CFG {
         for (Production production : this.productions) {
             String nonTerminal = production.getNonTerminal();
             ArrayList<String> output = production.getOutput();
-            epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, nonTerminal, nextStateNumber));
-            for (int i=0; i<output.size(); i++) {
-                epsilonTransitions.add(new PDA_Edge(nextStateNumber, StackAction.PUSH, output.get(i), ++nextStateNumber));
+            if (output.size() == 0) {
+                epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, nonTerminal, 2));
+            } else {
+                epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, nonTerminal, nextStateNumber));
+                for (int i=0; i<output.size()-1; i++) {
+                    epsilonTransitions.add(new PDA_Edge(nextStateNumber, StackAction.PUSH, output.get(i), ++nextStateNumber));
+                }
+                epsilonTransitions.add(new PDA_Edge(nextStateNumber, StackAction.PUSH, output.get(output.size()-1), 2));
+                nextStateNumber++;
             }
+            
         }
         return epsilonTransitions;
     }
@@ -264,7 +271,7 @@ public class CFG {
 
     public static void main(String Args[]) {
         Set<String> ran = new HashSet<String>();
-        Set<Production> r = new HashSet<Production>();
+        ArrayList<Production> r = new ArrayList<Production>();
         CFG test = new CFG(ran, ran, r, "ABC");
         System.out.println(test.getStartSymbol());
     }

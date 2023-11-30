@@ -14,7 +14,7 @@ public class CFGTest {
     private CFG palindrome;
     private Set<String> palNonTerms;
     private Set<String> palTerms;
-    private Set<Production> palProds;
+    private ArrayList<Production> palProds;
     private String palStartSym;
 
     @BeforeEach
@@ -28,7 +28,7 @@ public class CFGTest {
         term.add("b");
         this.palTerms = term;
 
-        Set<Production> prods = new HashSet<Production>();
+        ArrayList<Production> prods = new ArrayList<Production>();
         ArrayList<String> prod1 = new ArrayList<>();
         prod1.add("a");
         prod1.add("S");
@@ -74,8 +74,8 @@ public class CFGTest {
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
     public void getProductionsTestPalindrome() {
-        Set<Production> expected = this.palProds;
-        Set<Production> actual = this.palindrome.getProductions();
+        ArrayList<Production> expected = this.palProds;
+        ArrayList<Production> actual = this.palindrome.getProductions();
         assertEquals(expected, actual);
     }
 
@@ -125,7 +125,6 @@ public class CFGTest {
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
     public void createEdgeMapTestPalindrome() {
-        
     }
 
     @Test
@@ -134,13 +133,30 @@ public class CFGTest {
         PDA_Edge edge1 = new PDA_Edge(0, StackAction.PUSH, "⊥", 1);
         PDA_Edge edge2 = new PDA_Edge(1, StackAction.PUSH, "S", 2);
         PDA_Edge edge3 = new PDA_Edge(2, StackAction.POP, "⊥", 3);
+        PDA_Edge edge4 = new PDA_Edge(2, StackAction.POP, "S", 4);
+        PDA_Edge edge5 = new PDA_Edge(4, StackAction.PUSH, "a", 5);
+        PDA_Edge edge6 = new PDA_Edge(5, StackAction.PUSH, "S", 6);
+        PDA_Edge edge7 = new PDA_Edge(6, StackAction.PUSH, "a", 2);
+        PDA_Edge edge8 = new PDA_Edge(2, StackAction.POP, "S", 7);
+        PDA_Edge edge9 = new PDA_Edge(7, StackAction.PUSH, "b", 8);
+        PDA_Edge edge10 = new PDA_Edge(8, StackAction.PUSH, "S", 9);
+        PDA_Edge edge11 = new PDA_Edge(9, StackAction.PUSH, "b", 2);
+        PDA_Edge edge12 = new PDA_Edge(2, StackAction.POP, "S", 2);
 
         ArrayList<PDA_Edge> expected = new ArrayList<PDA_Edge>();
         expected.add(edge1);
         expected.add(edge2);
         expected.add(edge3);
+        expected.add(edge4);
+        expected.add(edge5);
+        expected.add(edge6);
+        expected.add(edge7);
+        expected.add(edge8);
+        expected.add(edge9);
+        expected.add(edge10);
+        expected.add(edge11);
+        expected.add(edge12);
         ArrayList<PDA_Edge> actual = palindrome.createEpsilonTransitions();
-        
         assertEquals(expected, actual);
     }
 

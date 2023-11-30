@@ -8,6 +8,18 @@ public class Production {
         this.output = output;
     }
 
+    public Production (String[] array) {
+        this.nonTerminal = array[0];
+        ArrayList<String> output = new ArrayList<String>();
+        if (array.length == 1) {
+            this.output = output;
+        } else {
+            for (int i=1;i<array.length;i++) {
+                output.add(array[i]);
+            }
+        }
+    }
+
     public String getNonTerminal() {
         return this.nonTerminal;
     }
