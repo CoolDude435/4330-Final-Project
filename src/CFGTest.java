@@ -18,7 +18,7 @@ public class CFGTest {
     private String palStartSym;
 
     @BeforeEach
-    void initPalindromeCFG() {
+    void initPalindromeCFGTest() {
         Set<String> nonTerm = new HashSet<String>();
         nonTerm.add("S");
         this.palNonTerms = nonTerm;
