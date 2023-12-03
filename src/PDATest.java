@@ -102,6 +102,7 @@ public class PDATest {
     public void getEpsilonTransitionsTest() {
         ArrayList<PDA_Edge> expected = this.palindromeEpsilonTransitions;
         ArrayList<PDA_Edge> actual = this.palindrome.getEpsilonTransitions();
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -127,54 +128,13 @@ public class PDATest {
         String actual = this.palindrome.getStackSymbol();
         assertEquals(expected, actual);
     }
-
-
-    @Test
-    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
-    public void setStatesTest() {
-
-    }
-
-    @Test
-    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
-    public void setInputAlphabetTest() {
-
-    }
-  
-    @Test
-    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
-    public void setStackAlphabetTest() {
-
-    }
-
-    @Test
-    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
-    public void setEdgeMapTest() {
-
-    }
-
-    @Test
-    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
-    public void setEpsilonTransitionsTest() {
-
-    }
-
-    @Test
-    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
-    public void setStartStateTest() {
-
-    }
-
-    @Test
-    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
-    public void setFinalStateTest() {
-
-    }
     
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
     public void equalsPDATest() {
         assertEquals(this.palindrome, this.palindrome);
+        assertNotEquals(this.palindrome, null);
+        assertNotEquals(this.palindrome, 2);
     }
 
 }

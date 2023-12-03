@@ -24,56 +24,28 @@ public class PDA {
         this.finalState = finalState;
     }
 
-    public void setStates (Set<Integer> states) {
-        this.states = states;
-    }
-
     public Set<Integer> getStates() {
         return this.states;
-    }
-
-    public void setInputAlphabet (Set<String> inputAlphabet) {
-        this.inputAlphabet = inputAlphabet;
     }
 
     public Set<String> getInputAlphabet () {
         return this.inputAlphabet;
     }
 
-    public void setStackAlphabet (Set<String> stackAlphabet) {
-        this.stackAlphabet = stackAlphabet;
-    }
-
     public Set<String> getStackAlphabet () {
         return this.stackAlphabet;
-    }
-
-    public void setEdgeMap (HashMap<String, PDA_Edge> edgeMap) {
-        this.edgeMap = edgeMap;
     }
 
     public HashMap<String, PDA_Edge> getEdgeMap () {
         return this.edgeMap;
     }
 
-    public void setEpsilonTransitions (ArrayList<PDA_Edge> epsilonTransitions) {
-        this.epsilonTransitions = epsilonTransitions;
-    }
-
     public ArrayList<PDA_Edge> getEpsilonTransitions () {
         return this.epsilonTransitions;
     }
 
-    public void setStartState (Integer startState) {
-        this.startState = startState;
-    }
-
     public Integer getStartState () {
         return this.startState;
-    }
-
-    public void setFinalState (Integer finalState) {
-        this.finalState = finalState;
     }
 
     public Integer getFinalState () {
