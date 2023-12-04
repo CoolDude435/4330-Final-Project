@@ -24,7 +24,7 @@ public class PDATest {
     final private String stackSymbol = "⊥";
 
     @BeforeEach
-    public void initPDATest() {
+    public void initPalindromePDA() {
         Integer[] states = {0,1,2,3,4,5,6,7,8,9};
         Set<Integer> States = new HashSet<Integer>(Arrays.asList(states));
         this.palindromeStates = States;

@@ -16,7 +16,7 @@ public class PDA_Visulization {
         this.graphName = graphName.replaceAll("\\s", "");
     }
 
-    public void createGraphFile() {
+    public boolean createGraphFile() {
         String currentDir = System.getProperty("user.dir");
         File gvFile = new File(currentDir + "\\" + this.graphName + ".gv");
         if (this.gvHeader == null) createGVHeader();
@@ -31,6 +31,7 @@ public class PDA_Visulization {
             // TODO Auto-generated catch block
             System.out.println("Error: File already exists/can't create file");
             e.printStackTrace();
+            return false;
         }
         try {
             FileWriter fw = new FileWriter(gvFile);
@@ -46,16 +47,16 @@ public class PDA_Visulization {
             }
             fw.write(fileLastLine);
             fw.close();
+            return true;
         } catch (IOException e) {
             // TODO Auto-generated catch block
             System.out.println("Error: Could not write to file");
             e.printStackTrace();
+            return false;
         }
-        
-        
     }
 
-    public void createGVHeader() {
+    public ArrayList<String> createGVHeader() {
         if (this.gvHeader == null) {
             ArrayList<String> headerLines = new ArrayList<String>();
             headerLines.add("digraph " + this.graphName + " {");
@@ -66,10 +67,12 @@ public class PDA_Visulization {
             headerLines.add("node [shape = circle];");
             headerLines.add("hidden -> 0;");
             this.gvHeader = headerLines;
+            return headerLines;
         }
+        return this.gvHeader;
     }
 
-    public void createGVEdges() {
+    public ArrayList<String> createGVEdges() {
         if (this.gvEdges == null) {
             ArrayList<String> fileLines = new ArrayList<String>();
             HashMap<String, PDA_Edge> edgeMap = this.pda.getEdgeMap();
@@ -108,9 +111,10 @@ public class PDA_Visulization {
                 String fileLine = graphEdge + edgeLabel;
                 fileLines.add(fileLine);
             }
-
             this.gvEdges = fileLines;
+            return fileLines;
         }
+        return this.createGVEdges();
     }
 
 
