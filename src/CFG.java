@@ -154,6 +154,7 @@ public class CFG {
     //need to fix this to work properly with productions that can lead to many empty productions
     private void removeEmptyProds() {
         //Find all empty productions
+        ArrayList<Production> emptyProdsToDel = new ArrayList<Production>();
         Set<String> emptyProds = new HashSet<String>();
         for(Production production : this.productions) {
             String nonTerminal = production.getNonTerminal();
@@ -171,7 +172,7 @@ public class CFG {
             ArrayList<String> output = production.getOutput();
             ArrayList<String> outputClone = (ArrayList<String>) output.clone();
             //this should always be a safe cast since output in Product is a ArrayList<String>
-            for(int i=0; i<output.size(); i++) {
+            for(int i=0; i<outputClone.size(); i++) {
                 if (emptyProds.contains(outputClone.get(i))) {
                     outputClone.remove(i);
                     i--;
@@ -182,8 +183,9 @@ public class CFG {
                 newProds.add(newProd);
             }
         }
+        for (Production prod : emptyProds) {
 
-        removeUnitProds();
+        }
     }
 
     private void replaceTerminals() {
@@ -210,25 +212,38 @@ public class CFG {
 
     private void splitProds() {
         ArrayList<Production> newProds = new ArrayList<Production>();
+        ArrayList<Production> prodsToBeDeleted = new ArrayList<Production>();
         for (Production production : this.productions) {
             String nonTerminal = production.getNonTerminal();
             ArrayList<String> output = production.getOutput();
             if (output.size() > 2) {
-                while (output.size() > 2) {
+                int finalSplitProdIdx;
+                for (int i=0;i<output.size()-2;i++) {
                     String newNonTerminal = createNewNonTerminal();
 
                     ArrayList<String> newOutput = new ArrayList<String>();
-                    newOutput.add(output.remove(0));
+                    newOutput.add(output.get(i));
                     newOutput.add(newNonTerminal);
                     
                     Production newSplitProduction = new Production(nonTerminal, newOutput);
                     newProds.add(newSplitProduction);
                     nonTerminal = newNonTerminal;
+                    finalSplitProdIdx = i + 1;
                 }
-                Production finalSlitProduction = new Production(nonTerminal, output);
+                ArrayList<String> finalOutput = new ArrayList<String>();
+                if (output.size()%2==0) {
+                    finalOutput.add(output.get(output.size()-2));
+                    finalOutput.add(output.get(output.size()-1));
+                } else {
+                    finalOutput.add(output.get(output.size()-1));
+                }
+                Production finalSlitProduction = new Production(nonTerminal, finalOutput);
                 newProds.add(finalSlitProduction);
-                this.productions.remove(production);
+                prodsToBeDeleted.add(production);
             }
+        }
+        for (Production prod : prodsToBeDeleted) {
+            this.productions.remove(prod);
         }
         this.productions.addAll(newProds);
     } 
@@ -273,7 +288,8 @@ private boolean isTerminalProd(Production production) {
                 letterCnt -= 26;
                 dupCnt++;
             }
-            newNonTerminal = duplicateLetter(letterCnt, Character.toString(letterCnt+40));
+            newNonTerminal = duplicateLetter(dupCnt, Character.toString((char)(letterCnt+64)));
+            System.out.println(newNonTerminal);
         }
         this.nonTerminals.add(newNonTerminal);
         return newNonTerminal;

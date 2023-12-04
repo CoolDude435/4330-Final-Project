@@ -47,9 +47,9 @@ public class Production {
     public String toString() {
         String output = "";
         for (String o : this.output) {
-            output = output + o;
+            output = output + " " + o;
         }
-        String result = this.nonTerminal + " -> " + output;
+        String result = this.nonTerminal + " ->" + output;
         return result;
     }
 }

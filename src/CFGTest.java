@@ -226,5 +226,18 @@ public class CFGTest {
         assertEquals(expected, actual);
     }
 
-    
+    @Test
+    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
+    public void convertToCNFPalindromeTest() {
+        this.palindrome.convertToCNF();
+        System.out.print("NonTerms:");
+        for (String nT : this.palindrome.getNonTerminals()) {
+            System.out.print(" " + nT);
+        }
+        System.out.println("");
+        System.out.println("Productions: ");
+        for (Production prods : this.palindrome.getProductions()) {
+            System.out.println(prods);
+        }
+    }
 }
