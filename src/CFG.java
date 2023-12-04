@@ -3,8 +3,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.HashMap;
 
-//import java.util.concurrent.atomic.AtomicInteger;
-
 public class CFG {
     private Set<String> nonTerminals;
     private Set<String> terminals;
@@ -33,6 +31,8 @@ public class CFG {
     public String getStartSymbol() {
         return this.startSymbol;
     }
+
+    //Methods to convert to a PDA
 
     public PDA convertToPDA() {
         Set<Integer> states = createStates();
@@ -120,9 +120,7 @@ public class CFG {
         return finalState;
     }
 
-
-
-
+    //Methods to convert to CNF
     
     public void convertToCNF() {
         replaceTerminals();
@@ -132,34 +130,42 @@ public class CFG {
     }
 
     private void removeUnitProds() {
+        ArrayList<Production> newProds = new ArrayList<Production>();
         for (Production production : this.productions) {
             String nonTerminal = production.getNonTerminal();
             ArrayList<String> output = production.getOutput();
             boolean isUnitProd = (output.size()==1) && !(this.terminals.contains(output.get(0)));
             if (isUnitProd) {
                 String unitProd = output.get(0);
-                for (Production p : this.productions) {
-                    if (p.getNonTerminal().equals(unitProd)) {
-                        Production newProd = new Production(nonTerminal, p.getOutput());
-                        this.productions.add(newProd);
+                for (Production prod : this.productions) {
+                    if (prod.getNonTerminal().equals(unitProd)) {
+                        Production newProd = new Production(nonTerminal, prod.getOutput());
+                        if (!this.productions.contains(newProd)) {
+                            newProds.add(newProd);
+                        }
                     }
                 }
                 this.productions.remove(production);
             }
         }
+        this.productions.addAll(newProds);
     }
 
+    //need to fix this to work properly with productions that can lead to many empty productions
     private void removeEmptyProds() {
+        //Find all empty productions
         Set<String> emptyProds = new HashSet<String>();
         for(Production production : this.productions) {
             String nonTerminal = production.getNonTerminal();
             ArrayList<String> output = production.getOutput();
-            if (output.size()==0) {
+            boolean isEmptyProd = output.size() == 0;
+            if (isEmptyProd) {
                 emptyProds.add(nonTerminal);
             }
         }
 
-        Set<Production> newProds = new HashSet<Production>();
+        //Remove empty productions and fix other productions
+        ArrayList<Production> newProds = new ArrayList<Production>();
         for(Production production : this.productions) {
             String nonTerminal = production.getNonTerminal();
             ArrayList<String> output = production.getOutput();
@@ -183,7 +189,6 @@ public class CFG {
     private void replaceTerminals() {
         for(String terminal : this.terminals) {
             String newNonTerminal = createNewNonTerminal();
-            this.nonTerminals.add(newNonTerminal);
 
             ArrayList<String> termProdArray = new ArrayList<String>();
             termProdArray.add(terminal);
@@ -204,26 +209,59 @@ public class CFG {
     }
 
     private void splitProds() {
+        ArrayList<Production> newProds = new ArrayList<Production>();
         for (Production production : this.productions) {
             String nonTerminal = production.getNonTerminal();
             ArrayList<String> output = production.getOutput();
             if (output.size() > 2) {
                 while (output.size() > 2) {
                     String newNonTerminal = createNewNonTerminal();
-                    this.nonTerminals.add(newNonTerminal);
 
                     ArrayList<String> newOutput = new ArrayList<String>();
                     newOutput.add(output.remove(0));
                     newOutput.add(newNonTerminal);
                     
                     Production newSplitProduction = new Production(nonTerminal, newOutput);
+                    newProds.add(newSplitProduction);
                     nonTerminal = newNonTerminal;
                 }
                 Production finalSlitProduction = new Production(nonTerminal, output);
+                newProds.add(finalSlitProduction);
                 this.productions.remove(production);
             }
         }
+        this.productions.addAll(newProds);
     } 
+
+/* 
+private boolean isTerminalProd(Production production) {
+        if (production.getOutput().size() == 1) {
+            String out = production.getOutput().get(0);
+            if (this.terminals.contains(out)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isUnitProd(Production production) {
+        if (production.getOutput().size() == 1) {
+            String out = production.getOutput().get(0);
+            if (!this.terminals.contains(out)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isEmptyProd(Production production) {
+        if (production.getOutput().size() == 0) {
+            return true;
+        }
+        return false;
+    }
+*/    
+    
 
     private String createNewNonTerminal() {
         Integer dupCnt = 0;
@@ -237,6 +275,7 @@ public class CFG {
             }
             newNonTerminal = duplicateLetter(letterCnt, Character.toString(letterCnt+40));
         }
+        this.nonTerminals.add(newNonTerminal);
         return newNonTerminal;
     }
 

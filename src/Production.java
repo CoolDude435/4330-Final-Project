@@ -8,6 +8,7 @@ public class Production {
         this.output = output;
     }
 
+/*
     public Production (String[] array) {
         this.nonTerminal = array[0];
         ArrayList<String> output = new ArrayList<String>();
@@ -19,7 +20,8 @@ public class Production {
             }
         }
     }
-
+ */
+   
     public String getNonTerminal() {
         return this.nonTerminal;
     }
@@ -39,5 +41,15 @@ public class Production {
             }
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        String output = "";
+        for (String o : this.output) {
+            output = output + o;
+        }
+        String result = this.nonTerminal + " -> " + output;
+        return result;
     }
 }

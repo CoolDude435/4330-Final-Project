@@ -19,9 +19,6 @@ public class PDATest {
     private Set<String> palindromeStackAlphabet;
     private HashMap<String, PDA_Edge> palindromeEdgeMap;
     private ArrayList<PDA_Edge> palindromeEpsilonTransitions;
-    private Integer palindromeStartState;
-    private Integer palindromeFinalState;
-    final private String stackSymbol = "⊥";
 
     @BeforeEach
     public void initPalindromePDA() {
@@ -53,9 +50,7 @@ public class PDATest {
         epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, "S", 2));
         this.palindromeEpsilonTransitions = epsilonTransitions;
         Integer startState = 0;
-        this.palindromeStartState = startState;
         Integer finalState = 3;
-        this.palindromeFinalState = finalState;
         this.palindrome = new PDA(States, inputAlphabet, stackAlphabet, edgeMap, epsilonTransitions, startState, finalState);
     }
 

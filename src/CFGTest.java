@@ -29,15 +29,15 @@ public class CFGTest {
         this.palTerms = term;
 
         ArrayList<Production> prods = new ArrayList<Production>();
-        ArrayList<String> prod1 = new ArrayList<>();
+        ArrayList<String> prod1 = new ArrayList<String>();
         prod1.add("a");
         prod1.add("S");
         prod1.add("a");
-        ArrayList<String> prod2 = new ArrayList<>();
+        ArrayList<String> prod2 = new ArrayList<String>();
         prod2.add("b");
         prod2.add("S");
         prod2.add("b");
-        ArrayList<String> prod3 = new ArrayList<>();
+        ArrayList<String> prod3 = new ArrayList<String>();
         prods.add(new Production("S", prod1));
         prods.add(new Production("S", prod2));
         prods.add(new Production("S", prod3));
@@ -225,4 +225,6 @@ public class CFGTest {
         Integer actual = this.palindrome.createFinalState();
         assertEquals(expected, actual);
     }
+
+    
 }
