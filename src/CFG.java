@@ -129,7 +129,7 @@ public class CFG {
         splitProds();
     }
 
-    private void removeUnitProds() {
+    public void removeUnitProds() {
         ArrayList<Production> newProds = new ArrayList<Production>();
         for (Production production : this.productions) {
             String nonTerminal = production.getNonTerminal();
@@ -152,7 +152,7 @@ public class CFG {
     }
 
     //need to fix this to work properly with productions that can lead to many empty productions
-    private void removeEmptyProds() {
+    public void removeEmptyProds() {
         //Find all empty productions
         ArrayList<Production> emptyProdsToDel = new ArrayList<Production>();
         Set<String> emptyProds = new HashSet<String>();
@@ -162,6 +162,7 @@ public class CFG {
             boolean isEmptyProd = output.size() == 0;
             if (isEmptyProd) {
                 emptyProds.add(nonTerminal);
+                emptyProdsToDel.add(production);
             }
         }
 
@@ -183,20 +184,16 @@ public class CFG {
                 newProds.add(newProd);
             }
         }
-        for (Production prod : emptyProds) {
-
+        for (Production prod : emptyProdsToDel) {
+            this.productions.remove(prod);
         }
     }
 
-    private void replaceTerminals() {
+    public void replaceTerminals() {
         for(String terminal : this.terminals) {
             String newNonTerminal = createNewNonTerminal();
 
-            ArrayList<String> termProdArray = new ArrayList<String>();
-            termProdArray.add(terminal);
-
-            Production termProd = new Production(newNonTerminal, termProdArray);
-            this.productions.add(termProd);
+            
 
             for(Production production : this.productions) {
                 ArrayList<String> output = production.getOutput();
@@ -207,17 +204,22 @@ public class CFG {
                     }
                 }
             }
+
+            ArrayList<String> termProdArray = new ArrayList<String>();
+            termProdArray.add(terminal);
+
+            Production termProd = new Production(newNonTerminal, termProdArray);
+            this.productions.add(termProd);
         }
     }
 
-    private void splitProds() {
+    public void splitProds() {
         ArrayList<Production> newProds = new ArrayList<Production>();
         ArrayList<Production> prodsToBeDeleted = new ArrayList<Production>();
         for (Production production : this.productions) {
             String nonTerminal = production.getNonTerminal();
             ArrayList<String> output = production.getOutput();
             if (output.size() > 2) {
-                int finalSplitProdIdx;
                 for (int i=0;i<output.size()-2;i++) {
                     String newNonTerminal = createNewNonTerminal();
 
@@ -228,15 +230,10 @@ public class CFG {
                     Production newSplitProduction = new Production(nonTerminal, newOutput);
                     newProds.add(newSplitProduction);
                     nonTerminal = newNonTerminal;
-                    finalSplitProdIdx = i + 1;
                 }
                 ArrayList<String> finalOutput = new ArrayList<String>();
-                if (output.size()%2==0) {
-                    finalOutput.add(output.get(output.size()-2));
-                    finalOutput.add(output.get(output.size()-1));
-                } else {
-                    finalOutput.add(output.get(output.size()-1));
-                }
+                finalOutput.add(output.get(output.size()-2));
+                finalOutput.add(output.get(output.size()-1));
                 Production finalSlitProduction = new Production(nonTerminal, finalOutput);
                 newProds.add(finalSlitProduction);
                 prodsToBeDeleted.add(production);
@@ -289,7 +286,6 @@ private boolean isTerminalProd(Production production) {
                 dupCnt++;
             }
             newNonTerminal = duplicateLetter(dupCnt, Character.toString((char)(letterCnt+64)));
-            System.out.println(newNonTerminal);
         }
         this.nonTerminals.add(newNonTerminal);
         return newNonTerminal;

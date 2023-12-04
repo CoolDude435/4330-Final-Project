@@ -229,7 +229,10 @@ public class CFGTest {
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
     public void convertToCNFPalindromeTest() {
-        this.palindrome.convertToCNF();
+        this.palindrome.replaceTerminals();
+        //this.palindrome.removeEmptyProds();
+        this.palindrome.removeUnitProds();
+        this.palindrome.splitProds();
         System.out.print("NonTerms:");
         for (String nT : this.palindrome.getNonTerminals()) {
             System.out.print(" " + nT);
