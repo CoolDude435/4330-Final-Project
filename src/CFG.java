@@ -173,19 +173,25 @@ public class CFG {
             ArrayList<String> output = production.getOutput();
             ArrayList<String> outputClone = (ArrayList<String>) output.clone();
             //this should always be a safe cast since output in Product is a ArrayList<String>
+            boolean removedSomething = false;
             for(int i=0; i<outputClone.size(); i++) {
                 if (emptyProds.contains(outputClone.get(i))) {
                     outputClone.remove(i);
                     i--;
+                    removedSomething = true;
                 }
             }
-            if (outputClone.size() != 0) {
+            //System.out.println(outputClone);
+            if (outputClone.size() != 0 && removedSomething) {
                 Production newProd = new Production(nonTerminal, outputClone);
                 newProds.add(newProd);
             }
         }
         for (Production prod : emptyProdsToDel) {
             this.productions.remove(prod);
+        }
+        for (Production prod : newProds) {
+            this.productions.add(prod);
         }
     }
 
