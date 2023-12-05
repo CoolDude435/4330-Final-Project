@@ -196,6 +196,7 @@ public class CFG {
     }
 
     public void removeEmptyProdsV2() {
+        ArrayList<Production> newProds = new ArrayList<Production>();
          //Find all empty productions
         ArrayList<Production> emptyProdsToDel = new ArrayList<Production>();
         Set<String> emptyProds = new HashSet<String>();
@@ -208,24 +209,56 @@ public class CFG {
                emptyProdsToDel.add(production);
            }
         }
+
+        //Remove empty prods and fix other prods
+        for (Production production : this.productions) {
+            if (hasAnEmptyProd(production, emptyProds)) {
+                ArrayList<Production> prodsWithoutEmpties = produceProdsWithoutEmpties(production, 0, emptyProds);
+                newProds.addAll(prodsWithoutEmpties);
+            }
+        }
+        ArrayList<Production> noDupes = new ArrayList<Production>();
+        for (Production prod : newProds) {
+            if (!this.productions.contains(prod)) {
+                noDupes.add(prod);
+            }
+        }
+        for (Production prod : noDupes) {
+            this.productions.add(prod);
+        }
+        for (Production prod : emptyProdsToDel) {
+            this.productions.remove(prod);
+        }
     }
 
-    public static ArrayList<Production> produceProdsWithoutEmpties(Production prodToCheck, Integer index, ArrayList<String> emptyProds) {
+    private static ArrayList<Production> produceProdsWithoutEmpties(Production prodToCheck, Integer index, Set<String> emptyProds) {
+        ArrayList<Production> resultingProds = new ArrayList<Production>();
+        String nonTerm = prodToCheck.getNonTerminal();
         ArrayList<String> output = prodToCheck.getOutput();
-        if (index>output.size()) return new ArrayList<Production>();
-        boolean hasNoEmpty = true;
-        Integer idx = index;
-        for (int i = index;i<output.size();i++) {
-            if (emptyProds.contains(output.get(i)));
+        if (index>output.size()) return resultingProds;
+        int checkIdx = index;
+        while ((checkIdx<output.size()) && (!emptyProds.contains(output.get(checkIdx)))) {
+            checkIdx++;
         }
-        while (hasNoEmpty) {
-
+        if (checkIdx>=output.size()) return resultingProds;
+        if (emptyProds.contains(output.get(checkIdx))) {
+            ArrayList<String> clone1 = (ArrayList<String>) output.clone();
+            clone1.remove(checkIdx);
+            ArrayList<String> clone2 = (ArrayList<String>) output.clone();
+            Production removedEmpty = new Production(nonTerm, clone1);
+            Production notRemoved = new Production(nonTerm, clone2);
+            resultingProds.add(removedEmpty);
+            resultingProds.add(notRemoved);
+            ArrayList<Production> branchRemoved = produceProdsWithoutEmpties(removedEmpty, checkIdx, emptyProds);
+            ArrayList<Production> branchNotRemoved = produceProdsWithoutEmpties(notRemoved, checkIdx+1, emptyProds);
+            resultingProds.addAll(branchRemoved);
+            resultingProds.addAll(branchNotRemoved);
         }
-        return null;
+        return resultingProds;
     }
 
     public void replaceTerminals() {
-        for(String terminal : this.terminals) {
+        for (String terminal : this.terminals) {
             String newNonTerminal = createNewNonTerminal();
 
             
@@ -280,8 +313,17 @@ public class CFG {
         this.productions.addAll(newProds);
     } 
 
+    private static boolean hasAnEmptyProd(Production prod, Set<String> emptyProds) {
+        for (String s : prod.getOutput()) {
+            if (emptyProds.contains(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 /* 
-private boolean isTerminalProd(Production production) {
+    private boolean isTerminalProd(Production production) {
         if (production.getOutput().size() == 1) {
             String out = production.getOutput().get(0);
             if (this.terminals.contains(out)) {
