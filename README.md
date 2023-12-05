@@ -15,7 +15,7 @@ IDE: VSCode
 <br>
 Libraries: 
 - java.util (ArrayList, Set, HashSet, HashMap, TimeUnit) - basic data structures
-- org.junit.jupiter.api (Assertions, BeforeEach, Test, Timeout) - JUnit 5 Testing
+- org.junit.jupiter.api (Assertions, BeforeEach, Test, Timeout) - JUnit 5 Testing (I think you will need to download JUnit 5 to run tests properly)
 - java.io (File, FileWriter, IOException) - Java IO to create and write to files
 ___
 **Sources**
