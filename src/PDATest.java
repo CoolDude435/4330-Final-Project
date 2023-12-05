@@ -7,12 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 public class PDATest {
+    private Examples examples = new Examples();
     private PDA palindrome;
     private Set<Integer> palindromeStates;
     private Set<String> palindromeInputAlphabet;
@@ -22,36 +21,12 @@ public class PDATest {
 
     @BeforeEach
     public void initPalindromePDA() {
-        Integer[] states = {0,1,2,3,4,5,6,7,8,9};
-        Set<Integer> States = new HashSet<Integer>(Arrays.asList(states));
-        this.palindromeStates = States;
-        String[] inputAlpha = {"a","b"};
-        Set<String> inputAlphabet = new HashSet<String>(Arrays.asList(inputAlpha));
-        this.palindromeInputAlphabet = inputAlphabet;
-        String[] stackAlpha = {"a","b","S"};
-        Set<String> stackAlphabet = new HashSet<String>(Arrays.asList(stackAlpha));
-        this.palindromeStackAlphabet = stackAlphabet;
-        HashMap<String, PDA_Edge> edgeMap = new HashMap<String, PDA_Edge>();
-        edgeMap.put("a", new PDA_Edge(2, StackAction.POP, "a", 2));
-        edgeMap.put("b", new PDA_Edge(2, StackAction.POP, "b", 2));
-        this.palindromeEdgeMap = edgeMap;
-        ArrayList<PDA_Edge> epsilonTransitions = new ArrayList<PDA_Edge>();
-        epsilonTransitions.add(new PDA_Edge(0, StackAction.PUSH, "⊥", 1));
-        epsilonTransitions.add(new PDA_Edge(1, StackAction.PUSH, "S", 2));
-        epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, "⊥", 3));
-        epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, "S", 4));
-        epsilonTransitions.add(new PDA_Edge(4, StackAction.PUSH, "a", 5));
-        epsilonTransitions.add(new PDA_Edge(5, StackAction.PUSH, "S", 6));
-        epsilonTransitions.add(new PDA_Edge(6, StackAction.PUSH, "a", 2));
-        epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, "S", 7));
-        epsilonTransitions.add(new PDA_Edge(7, StackAction.PUSH, "b", 8));
-        epsilonTransitions.add(new PDA_Edge(8, StackAction.PUSH, "S", 9));
-        epsilonTransitions.add(new PDA_Edge(9, StackAction.PUSH, "b", 2));
-        epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, "S", 2));
-        this.palindromeEpsilonTransitions = epsilonTransitions;
-        Integer startState = 0;
-        Integer finalState = 3;
-        this.palindrome = new PDA(States, inputAlphabet, stackAlphabet, edgeMap, epsilonTransitions, startState, finalState);
+        this.palindrome = examples.palindromePDA();
+        this.palindromeStates = examples.palStates();
+        this.palindromeInputAlphabet = examples.palInputAlphabet();
+        this.palindromeStackAlphabet = examples.palStackAlphabet();
+        this.palindromeEdgeMap = examples.palEdgeMap();
+        this.palindromeEpsilonTransitions = examples.palEpsilonTransitions();
     }
 
     @Test

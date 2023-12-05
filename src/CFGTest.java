@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.HashMap;
 
 public class CFGTest {
+    private Examples examples = new Examples();
     private CFG palindrome;
     private Set<String> palNonTerms;
     private Set<String> palTerms;
@@ -19,34 +20,11 @@ public class CFGTest {
 
     @BeforeEach
     void initPalindromeCFG() {
-        Set<String> nonTerm = new HashSet<String>();
-        nonTerm.add("S");
-        this.palNonTerms = nonTerm;
-
-        Set<String> term = new HashSet<String>();
-        term.add("a");
-        term.add("b");
-        this.palTerms = term;
-
-        ArrayList<Production> prods = new ArrayList<Production>();
-        ArrayList<String> prod1 = new ArrayList<String>();
-        prod1.add("a");
-        prod1.add("S");
-        prod1.add("a");
-        ArrayList<String> prod2 = new ArrayList<String>();
-        prod2.add("b");
-        prod2.add("S");
-        prod2.add("b");
-        ArrayList<String> prod3 = new ArrayList<String>();
-        prods.add(new Production("S", prod1));
-        prods.add(new Production("S", prod2));
-        prods.add(new Production("S", prod3));
-        this.palProds = prods;
-
-        String startSym = "S";
-        this.palStartSym = startSym;
-
-        this.palindrome = new CFG(this.palNonTerms, this.palTerms, this.palProds, this.palStartSym);
+        this.palindrome = examples.palindromeCFG();
+        this.palNonTerms = examples.palNonTerms();
+        this.palTerms = examples.palTerms();
+        this.palProds = examples.palProds();
+        this.palStartSym = examples.palStartSym();
     }
 
     @Test
