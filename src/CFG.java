@@ -396,11 +396,4 @@ public class CFG {
         }
         return output;
     }
-
-    public static void main(String Args[]) {
-        Set<String> ran = new HashSet<String>();
-        ArrayList<Production> r = new ArrayList<Production>();
-        CFG test = new CFG(ran, ran, r, "ABC");
-        System.out.println(test.getStartSymbol());
-    }
 }
