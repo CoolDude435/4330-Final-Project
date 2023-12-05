@@ -195,6 +195,35 @@ public class CFG {
         }
     }
 
+    public void removeEmptyProdsV2() {
+         //Find all empty productions
+        ArrayList<Production> emptyProdsToDel = new ArrayList<Production>();
+        Set<String> emptyProds = new HashSet<String>();
+        for(Production production : this.productions) {
+           String nonTerminal = production.getNonTerminal();
+           ArrayList<String> output = production.getOutput();
+           boolean isEmptyProd = output.size() == 0;
+           if (isEmptyProd) {
+               emptyProds.add(nonTerminal);
+               emptyProdsToDel.add(production);
+           }
+        }
+    }
+
+    public static ArrayList<Production> produceProdsWithoutEmpties(Production prodToCheck, Integer index, ArrayList<String> emptyProds) {
+        ArrayList<String> output = prodToCheck.getOutput();
+        if (index>output.size()) return new ArrayList<Production>();
+        boolean hasNoEmpty = true;
+        Integer idx = index;
+        for (int i = index;i<output.size();i++) {
+            if (emptyProds.contains(output.get(i)));
+        }
+        while (hasNoEmpty) {
+
+        }
+        return null;
+    }
+
     public void replaceTerminals() {
         for(String terminal : this.terminals) {
             String newNonTerminal = createNewNonTerminal();
