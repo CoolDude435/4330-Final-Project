@@ -1,7 +1,6 @@
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.HashMap;
 
 public class CFG {
     private Set<String> nonTerminals;
@@ -38,11 +37,11 @@ public class CFG {
         Set<Integer> states = createStates();
         Set<String> inputAlphabet = createInputAlphabet();
         Set<String> stackAlphabet = createStackAlphabet();
-        HashMap<String, PDA_Edge> edgeMap = createEdgeMap();
+        ArrayList<PDA_Edge> edges = createEdges();
         ArrayList<PDA_Edge> epsilonTransitions = createEpsilonTransitions();
         Integer startState = createStartState();
         Integer finalState = createFinalState();
-        PDA pda = new PDA(states, inputAlphabet, stackAlphabet, edgeMap, epsilonTransitions, startState, finalState);
+        PDA pda = new PDA(states, inputAlphabet, stackAlphabet, edges, epsilonTransitions, startState, finalState);
         return pda;
     }
 
@@ -71,13 +70,13 @@ public class CFG {
         return stackAlphabet;
     }
 
-    public HashMap<String, PDA_Edge> createEdgeMap() {
-        HashMap<String, PDA_Edge> edgeMap = new HashMap<String, PDA_Edge>();
+    public ArrayList<PDA_Edge> createEdges() {
+        ArrayList<PDA_Edge> edges = new ArrayList<PDA_Edge>();
         for (String terminal : this.terminals) {
-            PDA_Edge edge = new PDA_Edge(2, StackAction.POP, terminal, 2);
-            edgeMap.put(terminal, edge);
+            PDA_Edge edge = new PDA_Edge(terminal, 2, StackAction.POP, terminal, 2);
+            edges.add(edge);
         }
-        return edgeMap;
+        return edges;
     }
 
     public ArrayList<PDA_Edge> createEpsilonTransitions() {

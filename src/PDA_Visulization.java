@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -75,12 +73,11 @@ public class PDA_Visulization {
     public ArrayList<String> createGVEdges() {
         if (this.gvEdges == null) {
             ArrayList<String> fileLines = new ArrayList<String>();
-            HashMap<String, PDA_Edge> edgeMap = this.pda.getEdgeMap();
-            Set<String> inputs = edgeMap.keySet();
+            ArrayList<PDA_Edge> edges = this.pda.getEdges();
             ArrayList<PDA_Edge> epsilonTransitions = this.pda.getEpsilonTransitions();
 
-            for (String input : inputs) {
-                PDA_Edge edge = edgeMap.get(input);
+            for (PDA_Edge edge : edges) {
+                String input = edge.getInput();
                 String graphEdge = edge.getStartState() + " -> " + edge.getDestState();
                 String stackAction = "";
 

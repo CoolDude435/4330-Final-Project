@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.HashMap;
 
 public class CFGTest {
     private Examples examples = new Examples();
@@ -76,9 +75,9 @@ public class CFGTest {
         Set<String> inputAlphabet = new HashSet<String>(Arrays.asList(inputAlpha));
         String[] stackAlpha = {"a","b","S"};
         Set<String> stackAlphabet = new HashSet<String>(Arrays.asList(stackAlpha));
-        HashMap<String, PDA_Edge> edgeMap = new HashMap<String, PDA_Edge>();
-        edgeMap.put("a", new PDA_Edge(2, StackAction.POP, "a", 2));
-        edgeMap.put("b", new PDA_Edge(2, StackAction.POP, "b", 2));
+        ArrayList<PDA_Edge> edges = new ArrayList<PDA_Edge>();
+        edges.add(new PDA_Edge("a", 2, StackAction.POP, "a", 2));
+        edges.add(new PDA_Edge("b", 2, StackAction.POP, "b", 2));
         ArrayList<PDA_Edge> epsilonTransitions = new ArrayList<PDA_Edge>();
         epsilonTransitions.add(new PDA_Edge(0, StackAction.PUSH, "⊥", 1));
         epsilonTransitions.add(new PDA_Edge(1, StackAction.PUSH, "S", 2));
@@ -95,7 +94,7 @@ public class CFGTest {
         Integer startState = 0;
         Integer finalState = 3;
 
-        PDA expected = new PDA(States, inputAlphabet, stackAlphabet, edgeMap, epsilonTransitions, startState, finalState);
+        PDA expected = new PDA(States, inputAlphabet, stackAlphabet, edges, epsilonTransitions, startState, finalState);
         PDA actual = this.palindrome.convertToPDA();
 
         assertEquals(expected, actual);
@@ -130,11 +129,11 @@ public class CFGTest {
 
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
-    public void createEdgeMapTestPalindrome() {
-        HashMap<String, PDA_Edge> expected = new HashMap<String, PDA_Edge>();
-        expected.put("a", new PDA_Edge(2, StackAction.POP, "a", 2));
-        expected.put("b", new PDA_Edge(2, StackAction.POP, "b", 2));
-        HashMap<String, PDA_Edge> actual = this.palindrome.createEdgeMap();
+    public void createEdgesTestPalindrome() {
+        ArrayList<PDA_Edge> expected = new ArrayList<PDA_Edge>();
+        expected.add(new PDA_Edge("a", 2, StackAction.POP, "a", 2));
+        expected.add(new PDA_Edge("b", 2, StackAction.POP, "b", 2));
+        ArrayList<PDA_Edge> actual = this.palindrome.createEdges();
         assertEquals(expected, actual);
 
     }

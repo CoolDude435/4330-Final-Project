@@ -14,7 +14,7 @@ Programming Language: Java
 IDE: VSCode Win10
 <br>
 Libraries: 
-- java.util (ArrayList, Set, HashSet, HashMap, TimeUnit) - basic data structures
+- java.util (ArrayList, Set, HashSet, TimeUnit) - basic data structures
 - org.junit.jupiter.api (Assertions, BeforeEach, Test, Timeout) - JUnit 5 Testing (I think you will need to download JUnit 5 to run tests properly)
 - java.io (File, FileWriter, IOException) - Java IO to create and write to files
 ___
@@ -44,7 +44,7 @@ ___
 - CFG(Set<String\> nonTerminals, Set<String\> terminals, ArrayList<Production\> productions, String startSymbol) : constructor for a CFG
 - various getter methods
 2. Define a datatype for representing push-down automata
-- PDA(Set<Integer\> states, Set<String\> inputAlphabet, Set<String\> stackAlphabet, HashMap<String, PDA_Edge> edgeMap, ArrayList<PDA_Edge> epsilonTransitions, Integer startState, Integer finalState) : constructor for a PDA
+- PDA(Set<Integer\> states, Set<String\> inputAlphabet, Set<String\> stackAlphabet, ArrayList<PDA_Edge> edges, ArrayList<PDA_Edge> epsilonTransitions, Integer startState, Integer finalState) : constructor for a PDA
 - various getter methods
 - equals(Object o) : used to compare equality between two PDAs
 3. Write a printing function that can generate a GraphViz file for the transition diagram of a PDA
@@ -59,7 +59,7 @@ ___
 - createStates() : create the list of states for the PDA
 - createInputAlphabet() : create the inputAlphabet for the PDA
 - createStackAlphabet() : create the stackAlphabet for the PDA
-- createEdgeMap() : create the edges for terminals/empty productions for the PDA
+- createEdges() : create the edges for terminals/empty productions for the PDA
 - createEpsilonTransitions() : create the epsilon transitions for the PDA; these are the default edges and edges from the CFG productions
 - createDefaultEdges() : create the default edges like the edge to the final state, starting symbol edge, and stacksymbol edge
 - createStartState() : create the startState of the PDA; should always be 0 by default

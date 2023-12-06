@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.HashMap;
 
 public class Examples {
     public Examples() {
@@ -81,9 +80,9 @@ public class Examples {
         String[] stackAlpha = {"a","b","S"};
         Set<String> stackAlphabet = new HashSet<String>(Arrays.asList(stackAlpha));
 
-        HashMap<String, PDA_Edge> edgeMap = new HashMap<String, PDA_Edge>();
-        edgeMap.put("a", new PDA_Edge(2, StackAction.POP, "a", 2));
-        edgeMap.put("b", new PDA_Edge(2, StackAction.POP, "b", 2));
+        ArrayList<PDA_Edge> edges = new ArrayList<PDA_Edge>();
+        edges.add(new PDA_Edge("a", 2, StackAction.POP, "a", 2));
+        edges.add(new PDA_Edge("b", 2, StackAction.POP, "b", 2));
 
         ArrayList<PDA_Edge> epsilonTransitions = new ArrayList<PDA_Edge>();
         epsilonTransitions.add(new PDA_Edge(0, StackAction.PUSH, "⊥", 1));
@@ -101,7 +100,7 @@ public class Examples {
 
         Integer startState = 0;
         Integer finalState = 3;
-        return new PDA(States, inputAlphabet, stackAlphabet, edgeMap, epsilonTransitions, startState, finalState);
+        return new PDA(States, inputAlphabet, stackAlphabet, edges, epsilonTransitions, startState, finalState);
     }
 
     public Set<Integer> palStates() {
@@ -122,11 +121,11 @@ public class Examples {
         return stackAlphabet;
     }
 
-    public HashMap<String, PDA_Edge> palEdgeMap() {
-        HashMap<String, PDA_Edge> edgeMap = new HashMap<String, PDA_Edge>();
-        edgeMap.put("a", new PDA_Edge(2, StackAction.POP, "a", 2));
-        edgeMap.put("b", new PDA_Edge(2, StackAction.POP, "b", 2));
-        return edgeMap;
+    public ArrayList<PDA_Edge> palEdges() {
+        ArrayList<PDA_Edge> edges = new ArrayList<PDA_Edge>();
+        edges.add(new PDA_Edge("a", 2, StackAction.POP, "a", 2));
+        edges.add(new PDA_Edge("b", 2, StackAction.POP, "b", 2));
+        return edges;
     }
 
     public ArrayList<PDA_Edge> palEpsilonTransitions() {

@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Set;
 
 public class PDATest {
@@ -16,7 +15,7 @@ public class PDATest {
     private Set<Integer> palindromeStates;
     private Set<String> palindromeInputAlphabet;
     private Set<String> palindromeStackAlphabet;
-    private HashMap<String, PDA_Edge> palindromeEdgeMap;
+    private ArrayList<PDA_Edge> palindromeEdges;
     private ArrayList<PDA_Edge> palindromeEpsilonTransitions;
 
     @BeforeEach
@@ -25,7 +24,7 @@ public class PDATest {
         this.palindromeStates = examples.palStates();
         this.palindromeInputAlphabet = examples.palInputAlphabet();
         this.palindromeStackAlphabet = examples.palStackAlphabet();
-        this.palindromeEdgeMap = examples.palEdgeMap();
+        this.palindromeEdges = examples.palEdges();
         this.palindromeEpsilonTransitions = examples.palEpsilonTransitions();
     }
 
@@ -61,9 +60,9 @@ public class PDATest {
 
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
-    public void getEdgeMapTest() {
-        HashMap<String, PDA_Edge> expected = this.palindromeEdgeMap;
-        HashMap<String, PDA_Edge> actual = this.palindrome.getEdgeMap();
+    public void getEdgesTest() {
+        ArrayList<PDA_Edge> expected = this.palindromeEdges;
+        ArrayList<PDA_Edge> actual = this.palindrome.getEdges();
         assertEquals(expected, actual);
     }
 
