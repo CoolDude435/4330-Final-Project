@@ -45,14 +45,21 @@ public class PDA_Edge {
     public boolean equals(Object o) {
         if (o instanceof PDA_Edge) {
             PDA_Edge edge = (PDA_Edge) o;
+            boolean equalInput = this.input.equals(edge.getInput());
             boolean equalStartState = this.startState == edge.getStartState();
             boolean equalStackAction = this.stackAction == edge.getStackAction();
             boolean equalStackUpdate = this.stackUpdate.equals(edge.getStackUpdate());
             boolean equalDestState = this.destState == edge.getDestState();
-            if (equalStartState && equalStackAction && equalStackUpdate && equalDestState) {
+            if (equalInput && equalStartState && equalStackAction && equalStackUpdate && equalDestState) {
                 return true;
             }
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        String output = "Input: " + this.input + "Start: " + this.startState + "StackUpdate: " + this.stackUpdate + "End: " + this.destState;
+        return output;
     }
 }

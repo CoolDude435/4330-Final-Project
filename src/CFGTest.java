@@ -69,34 +69,16 @@ public class CFGTest {
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
     public void convertToPDATestPalindrome() {
-        Integer[] states = {0,1,2,3,4,5,6,7,8,9};
-        Set<Integer> States = new HashSet<Integer>(Arrays.asList(states));
-        String[] inputAlpha = {"a","b"};
-        Set<String> inputAlphabet = new HashSet<String>(Arrays.asList(inputAlpha));
-        String[] stackAlpha = {"a","b","S"};
-        Set<String> stackAlphabet = new HashSet<String>(Arrays.asList(stackAlpha));
-        ArrayList<PDA_Edge> edges = new ArrayList<PDA_Edge>();
-        edges.add(new PDA_Edge("a", 2, StackAction.POP, "a", 2));
-        edges.add(new PDA_Edge("b", 2, StackAction.POP, "b", 2));
-        ArrayList<PDA_Edge> epsilonTransitions = new ArrayList<PDA_Edge>();
-        epsilonTransitions.add(new PDA_Edge(0, StackAction.PUSH, "⊥", 1));
-        epsilonTransitions.add(new PDA_Edge(1, StackAction.PUSH, "S", 2));
-        epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, "⊥", 3));
-        epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, "S", 4));
-        epsilonTransitions.add(new PDA_Edge(4, StackAction.PUSH, "a", 5));
-        epsilonTransitions.add(new PDA_Edge(5, StackAction.PUSH, "S", 6));
-        epsilonTransitions.add(new PDA_Edge(6, StackAction.PUSH, "a", 2));
-        epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, "S", 7));
-        epsilonTransitions.add(new PDA_Edge(7, StackAction.PUSH, "b", 8));
-        epsilonTransitions.add(new PDA_Edge(8, StackAction.PUSH, "S", 9));
-        epsilonTransitions.add(new PDA_Edge(9, StackAction.PUSH, "b", 2));
-        epsilonTransitions.add(new PDA_Edge(2, StackAction.POP, "S", 2));
+        Set<Integer> States = examples.palStates();
+        Set<String> inputAlphabet = examples.palInputAlphabet();
+        Set<String> stackAlphabet = examples.palStackAlphabet();
+        ArrayList<PDA_Edge> edges = examples.palEdges();
+        ArrayList<PDA_Edge> epsilonTransitions = examples.palEpsilonTransitions();
         Integer startState = 0;
         Integer finalState = 3;
 
         PDA expected = new PDA(States, inputAlphabet, stackAlphabet, edges, epsilonTransitions, startState, finalState);
         PDA actual = this.palindrome.convertToPDA();
-
         assertEquals(expected, actual);
     }
     

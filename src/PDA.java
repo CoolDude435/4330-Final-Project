@@ -56,6 +56,7 @@ public class PDA {
 
     @Override
     public boolean equals(Object o) {
+        System.out.println("Ran equals");
         if (o instanceof PDA) {
             PDA pda = (PDA) o;
             boolean equalStates = this.states.equals(pda.getStates());
@@ -65,6 +66,13 @@ public class PDA {
             boolean equalEpsilonsTrans = this.epsilonTransitions.equals(pda.getEpsilonTransitions());
             boolean equalStartState = this.startState.equals(pda.getStartState());
             boolean equalFinalState = this.finalState.equals(pda.getFinalState());
+            System.out.println(equalStates);
+            System.out.println(equalInputAlphabet);
+            System.out.println(equalStackAlphabet);
+            System.out.println(equalEdges);
+            System.out.println(equalEpsilonsTrans);
+            System.out.println(equalStartState);
+            System.out.println(equalFinalState);
             if (equalStates && equalInputAlphabet && equalStackAlphabet && equalEdges &&
                 equalEpsilonsTrans && equalStartState && equalFinalState) {
                 return true;
