@@ -59,7 +59,14 @@ public class PDA_Edge {
 
     @Override
     public String toString() {
-        String output = "Input: " + this.input + "Start: " + this.startState + "StackUpdate: " + this.stackUpdate + "End: " + this.destState;
+        String stackAction = "";
+        if (this.stackAction==StackAction.POP) {
+            stackAction = "-";
+        } else {
+            stackAction = "+";
+        }
+        String output = "Input: " + this.input + " Start: " + this.startState + "StackAction: " + stackAction + 
+                        " StackUpdate: " + this.stackUpdate + " End: " + this.destState;
         return output;
     }
 }
