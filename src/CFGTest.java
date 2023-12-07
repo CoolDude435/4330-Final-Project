@@ -203,4 +203,24 @@ public class CFGTest {
             System.out.println(prods);
         }
     }
+
+    @Test
+    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
+    public void printPalindromeCFG() {
+        System.out.println(examples.palindromeCFG());
+    }
+
+    @Test
+    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
+    public void printEPlusECFG() {
+        System.out.println(examples.EPlusE());
+    }
+
+    @Test
+    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
+    public void createGraphVizEPlusE() {
+        PDA EPlusE_PDA = examples.EPlusE().convertToPDA();
+        PDA_Visulization EPlusEVis = new PDA_Visulization(EPlusE_PDA, "EPlusE");
+        EPlusEVis.createGraphFile();
+    }
 }

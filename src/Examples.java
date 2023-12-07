@@ -154,4 +154,28 @@ public class Examples {
         Integer finalState = 3;
         return finalState;
     }
+
+    public CFG EPlusE() {
+        String startSymbol = "S";
+        String[] nonTerm = {"S", "E"};
+        Set<String> nonTerminals = new HashSet<String>(Arrays.asList(nonTerm));
+        String[] term = {"x", "y"};
+        Set<String> terminals = new HashSet<String>(Arrays.asList(term));
+        ArrayList<Production> productions = new ArrayList<Production>();
+        ArrayList<String> prod1 = new ArrayList<String>();
+        prod1.add("E");
+        productions.add(new Production("S", prod1));
+        ArrayList<String> prod2 = new ArrayList<String>();
+        prod2.add("E");
+        prod2.add("+");
+        prod2.add("E");
+        productions.add(new Production("E", prod2));
+        ArrayList<String> prod3 = new ArrayList<String>();
+        prod3.add("x");
+        productions.add(new Production("E", prod3));
+        ArrayList<String> prod4 = new ArrayList<String>();
+        prod4.add("y");
+        productions.add(new Production("E", prod4));
+        return new CFG(nonTerminals, terminals, productions, startSymbol);
+    }
 }

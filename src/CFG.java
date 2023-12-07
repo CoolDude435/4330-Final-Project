@@ -395,4 +395,27 @@ public class CFG {
         }
         return output;
     }
+
+    @Override
+    public String toString() {
+        String output;
+        String lineSeperator = System.getProperty("line.separator");
+        String nonTerminals = "NonTerminals: ";
+        for (String nonterm : this.nonTerminals) {
+            nonTerminals = nonTerminals + nonterm + ", ";
+        }
+        nonTerminals = nonTerminals + lineSeperator;
+        String terminals = "Terminals: ";
+        for (String term : this.terminals) {
+            terminals = terminals + term + ", ";
+        }
+        terminals = terminals + lineSeperator;
+        String productions = "Productions:" + lineSeperator;
+        for (Production prod : this.productions) {
+            productions = productions + prod + lineSeperator;
+        }
+        String startSymbol = "StartSymbol: " + this.startSymbol;
+        output = nonTerminals + terminals + productions + startSymbol;
+        return output;
+    }
 }
