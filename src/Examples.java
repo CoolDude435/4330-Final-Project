@@ -159,7 +159,7 @@ public class Examples {
         String startSymbol = "S";
         String[] nonTerm = {"S", "E"};
         Set<String> nonTerminals = new HashSet<String>(Arrays.asList(nonTerm));
-        String[] term = {"x", "y"};
+        String[] term = {"x", "y", "+"};
         Set<String> terminals = new HashSet<String>(Arrays.asList(term));
         ArrayList<Production> productions = new ArrayList<Production>();
         ArrayList<String> prod1 = new ArrayList<String>();
@@ -178,4 +178,6 @@ public class Examples {
         productions.add(new Production("E", prod4));
         return new CFG(nonTerminals, terminals, productions, startSymbol);
     }
+
+    
 }

@@ -193,15 +193,6 @@ public class CFGTest {
         this.palindrome.removeEmptyProdsV2();
         this.palindrome.removeUnitProds();
         this.palindrome.splitProds();
-        System.out.print("NonTerms:");
-        for (String nT : this.palindrome.getNonTerminals()) {
-            System.out.print(" " + nT);
-        }
-        System.out.println("");
-        System.out.println("Productions: ");
-        for (Production prods : this.palindrome.getProductions()) {
-            System.out.println(prods);
-        }
     }
 
     @Test
@@ -222,5 +213,23 @@ public class CFGTest {
         PDA EPlusE_PDA = examples.EPlusE().convertToPDA();
         PDA_Visulization EPlusEVis = new PDA_Visulization(EPlusE_PDA, "EPlusE");
         EPlusEVis.createGraphFile();
+    }
+
+    @Test
+    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
+    public void printEPlusECFG_CNF() {
+        CFG EPlusE = examples.EPlusE();
+        EPlusE.convertToCNF();
+        System.out.println(EPlusE);
+    }
+
+    @Test
+    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
+    public void createGraphVizEPlusECNFtoPDA() {
+        CFG EPlusE = examples.EPlusE();
+        EPlusE.convertToCNF();
+        PDA EPlusE_CNF_PDA = EPlusE.convertToPDA();
+        PDA_Visulization EPlusE_CNF_PDAVis = new PDA_Visulization(EPlusE_CNF_PDA, "EPlusE_CNFtoPDA");
+        EPlusE_CNF_PDAVis.createGraphFile();
     }
 }

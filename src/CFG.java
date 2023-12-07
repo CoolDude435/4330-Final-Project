@@ -130,6 +130,7 @@ public class CFG {
 
     public void removeUnitProds() {
         ArrayList<Production> newProds = new ArrayList<Production>();
+        ArrayList<Production> prodsToRemove = new ArrayList<Production>();
         for (Production production : this.productions) {
             String nonTerminal = production.getNonTerminal();
             ArrayList<String> output = production.getOutput();
@@ -144,9 +145,10 @@ public class CFG {
                         }
                     }
                 }
-                this.productions.remove(production);
+                prodsToRemove.add(production);
             }
         }
+        this.productions.removeAll(prodsToRemove);
         this.productions.addAll(newProds);
     }
 
@@ -321,6 +323,16 @@ public class CFG {
         return false;
     }
 
+    private boolean isUnitProd(Production production) {
+            if (production.getOutput().size() == 1) {
+                String out = production.getOutput().get(0);
+                if (!this.terminals.contains(out)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
 /* 
     private boolean isTerminalProd(Production production) {
         if (production.getOutput().size() == 1) {
@@ -332,15 +344,7 @@ public class CFG {
         return false;
     }
 
-    private boolean isUnitProd(Production production) {
-        if (production.getOutput().size() == 1) {
-            String out = production.getOutput().get(0);
-            if (!this.terminals.contains(out)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    
 
     private boolean isEmptyProd(Production production) {
         if (production.getOutput().size() == 0) {
