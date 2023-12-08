@@ -2,6 +2,8 @@
 **Project Detail**
 <br>
 I did my project on option two Algorithms on CFGs and PDAs
+<br>
+Extra credit: I completed the course evaluation.
 ___
 **Author**
 <br>
