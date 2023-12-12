@@ -194,6 +194,8 @@ public class CFGTest {
         assertEquals(expected, actual);
     }
 
+    //Everything below here is not really a test, but just examples you can run
+
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
     public void printPalindromeCFG() {
@@ -237,5 +239,35 @@ public class CFGTest {
         PDA EPlusE_CNF_PDA = EPlusE.convertToPDA();
         PDA_Visulization EPlusE_CNF_PDAVis = new PDA_Visulization(EPlusE_CNF_PDA, "EPlusE_CNFtoPDA");
         EPlusE_CNF_PDAVis.createGraphFile();
+    }
+
+    @Test
+    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
+    public void printEZMultiEmptyProdCFG() {
+        CFG EZMultiEmptyProd = examples.EZMultiEmptyProds();
+        System.out.println(EZMultiEmptyProd);
+    }
+
+    @Test
+    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
+    public void printEZMultiEmptyProdCNF_CFG() {
+        CFG EZMultiEmptyProd = examples.EZMultiEmptyProds();
+        EZMultiEmptyProd.convertToCNF();
+        System.out.println(EZMultiEmptyProd);
+    }
+
+    @Test
+    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
+    public void printMultiEmptyProdCFG() {
+        CFG MultiEmptyProd = examples.MultiEmptyProds();
+        System.out.println(MultiEmptyProd);
+    }
+
+    @Test
+    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
+    public void printMultiEmptyProdCNF_CFG() {
+        CFG MultiEmptyProd = examples.MultiEmptyProds();
+        MultiEmptyProd.convertToCNF();
+        System.out.println(MultiEmptyProd);
     }
 }

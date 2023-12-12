@@ -125,11 +125,13 @@ public class CFG {
         ArrayList<Production> emptyProds = findEmptyProds();
         replaceTerminals();
         removeUnitProds();
-        boolean needMoreWork = removeEmptyProdsV2(emptyProds);
+        boolean needMoreWork = removeEmptyProds(emptyProds);
+        emptyProds.addAll(findEmptyProds());
         while (needMoreWork) {
             needMoreWork = removeUnitProds();
             if (needMoreWork) {
-                needMoreWork = removeEmptyProdsV2(emptyProds);
+                needMoreWork = removeEmptyProds(emptyProds);
+                emptyProds.addAll(findEmptyProds());
             }
         }
         
@@ -170,49 +172,7 @@ public class CFG {
         return addedProduction;
     }
 
-    /*
-    private void removeEmptyProds() {
-        //Find all empty productions
-        ArrayList<Production> emptyProdsToDel = new ArrayList<Production>();
-        Set<String> emptyProds = new HashSet<String>();
-        for(Production production : this.productions) {
-            String nonTerminal = production.getNonTerminal();
-            ArrayList<String> output = production.getOutput();
-            boolean isEmptyProd = output.size() == 0;
-            if (isEmptyProd) {
-                emptyProds.add(nonTerminal);
-                emptyProdsToDel.add(production);
-            }
-        }
-
-        //Remove empty productions and fix other productions
-        ArrayList<Production> newProds = new ArrayList<Production>();
-        for(Production production : this.productions) {
-            String nonTerminal = production.getNonTerminal();
-            ArrayList<String> output = production.getOutput();
-            ArrayList<String> outputClone = (ArrayList<String>) output.clone();
-            //this should always be a safe cast since output in Product is a ArrayList<String>
-            boolean removedSomething = false;
-            for(int i=0; i<outputClone.size(); i++) {
-                if (emptyProds.contains(outputClone.get(i))) {
-                    outputClone.remove(i);
-                    i--;
-                    removedSomething = true;
-                }
-            }
-            //System.out.println(outputClone);
-            if (outputClone.size() != 0 && removedSomething) {
-                Production newProd = new Production(nonTerminal, outputClone);
-                newProds.add(newProd);
-            }
-        }
-        this.productions.removeAll(emptyProdsToDel);
-        this.productions.addAll(newProds);
-    }
-     */
-    
-
-    private boolean removeEmptyProdsV2(ArrayList<Production> emptyProds) {
+    private boolean removeEmptyProds(ArrayList<Production> emptyProds) {
         boolean addedProduction = false;
         ArrayList<Production> newProds = new ArrayList<Production>();
 
@@ -223,9 +183,15 @@ public class CFG {
         for (Production production : this.productions) {
             if (hasAnEmptyProd(production, emptyProdsNonTerm)) {
                 ArrayList<Production> prodsWithoutEmpties = produceProdsWithoutEmpties(production, 0, emptyProdsNonTerm);
-                newProds.addAll(prodsWithoutEmpties);
+                for (Production prod : prodsWithoutEmpties) {
+                    if (!newProds.contains(prod)) {
+                        newProds.add(prod);
+                    }
+                }
             }
         }
+
+        //Make sure productions being added aren't already in the list of productions
         ArrayList<Production> noDupes = new ArrayList<Production>();
         for (Production prod : newProds) {
             if (!this.productions.contains(prod)) {
@@ -285,7 +251,7 @@ public class CFG {
         return resultingProds;
     }
 
-    public void replaceTerminals() {
+    private void replaceTerminals() {
         for (String terminal : this.terminals) {
             String newNonTerminal = createNewNonTerminal();
 
@@ -309,7 +275,7 @@ public class CFG {
         }
     }
 
-    public void splitProds() {
+    private void splitProds() {
         ArrayList<Production> newProds = new ArrayList<Production>();
         ArrayList<Production> prodsToBeDeleted = new ArrayList<Production>();
         for (Production production : this.productions) {
@@ -350,49 +316,6 @@ public class CFG {
         return false;
     }
 
-    
-/* 
-private boolean hasMoreUnitProds() {
-            if (production.getOutput().size() == 1) {
-                String out = production.getOutput().get(0);
-                if (!this.terminals.contains(out)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-    private boolean hasMoreEmptyProds(ArrayList<Production> emptyProds) {
-        boolean hasMore = false;
-        Set<String> emptyProdNonTerms = getEmptyProdsNonTerms(emptyProds);
-        for (Production prod : this.productions) {
-            if ((prod.getOutput().size()==1) && ())
-        }
-        return hasMore;
-    }
-
-
-    private boolean isTerminalProd(Production production) {
-        if (production.getOutput().size() == 1) {
-            String out = production.getOutput().get(0);
-            if (this.terminals.contains(out)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    
-
-    private boolean isEmptyProd(Production production) {
-        if (production.getOutput().size() == 0) {
-            return true;
-        }
-        return false;
-    }
-*/    
-    
-
     private String createNewNonTerminal() {
         Integer dupCnt = 0;
         Integer letterCnt = 1;
@@ -408,27 +331,6 @@ private boolean hasMoreUnitProds() {
         this.nonTerminals.add(newNonTerminal);
         return newNonTerminal;
     }
-
-/*
-    private String createNewNonTerminal(AtomicInteger duplicateCount, AtomicInteger letterCount) {
-        Set<String> nonTerminals = this.nonTerminals;
-        Set<String> terminals = this.terminals;
-        Integer dupCnt = duplicateCount.intValue();
-        Integer letterCnt = letterCount.intValue();
-        String newNonTerminal = duplicateLetter(dupCnt, Character.toString(letterCnt+40));
-        while ((nonTerminals.contains(newNonTerminal)) || (terminals.contains(newNonTerminal))) {
-            letterCnt++;
-            if (letterCnt >= 27) {
-                letterCnt -= 26;
-                dupCnt++;
-            }
-            newNonTerminal = duplicateLetter(dupCnt, Character.toString(letterCnt+40));
-        }
-        duplicateCount = new AtomicInteger(dupCnt);
-        letterCount = new AtomicInteger(letterCnt);
-        return newNonTerminal;
-    }
-*/
 
     private static String duplicateLetter(Integer numDuplicates, String letter) {
         String output = "";

@@ -228,5 +228,87 @@ public class Examples {
         return new CFG(nonTerminals, terminals, productions, startSymbol);
     }
 
-    
+    public CFG EZMultiEmptyProds() {
+        Set<String> nonTerm = new HashSet<String>();
+        nonTerm.add("S");
+        nonTerm.add("A");
+        nonTerm.add("B");
+        nonTerm.add("C");
+
+        Set<String> term = new HashSet<String>();
+        term.add("a");
+        term.add("b");
+        term.add("c");
+
+        ArrayList<Production> prods = new ArrayList<Production>();
+        ArrayList<String> prodABC = new ArrayList<>();
+        prodABC.add("A");
+        prodABC.add("B");
+        prodABC.add("C");
+        ArrayList<String> aprodEmpty = new ArrayList<>();
+        ArrayList<String> bprodEmpty = new ArrayList<>();
+        ArrayList<String> cprodEmpty = new ArrayList<>();
+        ArrayList<String> proda = new ArrayList<>();
+        proda.add("a");
+        ArrayList<String> prodb = new ArrayList<>();
+        prodb.add("b");
+        ArrayList<String> prodc = new ArrayList<>();
+        prodc.add("c");
+        prods.add(new Production("S", prodABC));
+        prods.add(new Production("A", aprodEmpty));
+        prods.add(new Production("B", bprodEmpty));
+        prods.add(new Production("C", cprodEmpty));
+        prods.add(new Production("A", proda));
+        prods.add(new Production("B", prodb));
+        prods.add(new Production("C", prodc));
+
+        String startSym = "S";
+
+        return new CFG(nonTerm, term, prods, startSym);
+    }
+
+    public CFG MultiEmptyProds() {
+        Set<String> nonTerm = new HashSet<String>();
+        nonTerm.add("S");
+        nonTerm.add("B");
+        nonTerm.add("D");
+
+        Set<String> term = new HashSet<String>();
+        term.add("a");
+        term.add("b");
+        term.add("c");
+        term.add("d");
+
+        ArrayList<Production> prods = new ArrayList<Production>();
+        ArrayList<String> prodaBcD = new ArrayList<>();
+        prodaBcD.add("a");
+        prodaBcD.add("B");
+        prodaBcD.add("c");
+        prodaBcD.add("D");
+        ArrayList<String> bprodEmpty = new ArrayList<>();
+        ArrayList<String> dprodEmpty = new ArrayList<>();
+        ArrayList<String> prodaB = new ArrayList<>();
+        prodaB.add("a");
+        prodaB.add("B");
+        ArrayList<String> prodcD = new ArrayList<>();
+        prodcD.add("c");
+        prodcD.add("D");
+        ArrayList<String> prodb = new ArrayList<>();
+        prodb.add("b");
+        ArrayList<String> prodd = new ArrayList<>();
+        prodd.add("d");
+        prods.add(new Production("S", prodaBcD));
+        prods.add(new Production("B", bprodEmpty));
+        prods.add(new Production("D", dprodEmpty));
+        prods.add(new Production("B", prodaB));
+        prods.add(new Production("D", prodcD));
+        prods.add(new Production("B", prodb));
+        prods.add(new Production("D", prodd));
+
+        String startSym = "S";
+
+        return new CFG(nonTerm, term, prods, startSym);
+    }
+
+
 }

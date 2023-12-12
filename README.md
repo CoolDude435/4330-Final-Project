@@ -70,11 +70,11 @@ ___
 - createFinalState() : create the startState of the PDA; should always be 3 by default
 5. Write a function to transform a grammar into Chomsky normal form
 - convertToCNF() : converts a CFG to CNF using the helper methods below
-- removeUnitProds() : removes unit productions
-- removeEmptyProds() : removes empty productions
+- removeUnitProds() : removes unit productions, returns true if it added productions
+- removeEmptyProds() : removes empty productions, returns true if it added productions
 - produceProdsWithoutEmpties() : produces all combinations of a production with the empty productions removed
 - findEmptyProds() : finds all the productions that outputs nothing
-- fidnEmptyProds() : given a list of empty productions creates and returns a set of strings which are the nonterminals of those productions
+- findEmptyProdsNonTerms() : given a list of empty productions creates and returns a set of strings which are the nonterminals of those productions
 - replaceTerminals() : replaces terminals with a standin nonterminal
 - splitProds() : split up productions to have a max length of two
 - hasAnEmptyProd() : checks if an production has an empty production
@@ -83,7 +83,17 @@ ___
 ___
 **Status**
 <br>
-Currently I have not found any bugs yet, everything seems to be in working order.
+After the testing I've done I don't seem to have found any issues with the examples I tested on.
+<br>
+If there are any issues I think it would be on converting a CFG to CNF where the CFG has productions with multiple
+<br>
+outputs that can lead to an empty production. IE S -> A B C, A -> " ", B -> " ", C -> " "
+<br>
+I've tested that exact CFG and it seems to work, but there could be edge cases I haven't found.
+<br>
+Another possible issue could be the PDA_Visualization which creates a graphViz file,
+<br>
+on my PC it creates the file, but on other devices behavior might differ, like if you have security/antivirus and stuff.
 ___
 **Testing**
 <br>
