@@ -155,6 +155,55 @@ public class Examples {
         return finalState;
     }
 
+    public CFG palindromeCNF_CFG() {
+        Set<String> nonTerm = new HashSet<String>();
+        nonTerm.add("S");
+        nonTerm.add("A");
+        nonTerm.add("B");
+        nonTerm.add("C");
+        nonTerm.add("D");
+
+        Set<String> term = new HashSet<String>();
+        term.add("a");
+        term.add("b");
+
+        ArrayList<Production> prods = new ArrayList<Production>();
+        ArrayList<String> prodA = new ArrayList<>();
+        prodA.add("a");
+        ArrayList<String> prodB = new ArrayList<>();
+        prodB.add("b");
+        ArrayList<String> prodAA = new ArrayList<>();
+        prodAA.add("A");
+        prodAA.add("A");
+        ArrayList<String> prodBB = new ArrayList<>();
+        prodBB.add("B");
+        prodBB.add("B");
+        ArrayList<String> prodAC = new ArrayList<>();
+        prodAC.add("A");
+        prodAC.add("C");
+        ArrayList<String> prodSA = new ArrayList<>();
+        prodSA.add("S");
+        prodSA.add("A");
+        ArrayList<String> prodBD = new ArrayList<>();
+        prodBD.add("B");
+        prodBD.add("D");
+        ArrayList<String> prodSB = new ArrayList<>();
+        prodSB.add("S");
+        prodSB.add("B");
+        prods.add(new Production("A", prodA));
+        prods.add(new Production("B", prodB));
+        prods.add(new Production("S", prodAA));
+        prods.add(new Production("S", prodBB));
+        prods.add(new Production("S", prodAC));
+        prods.add(new Production("C", prodSA));
+        prods.add(new Production("S", prodBD));
+        prods.add(new Production("D", prodSB));
+
+        String startSym = "S";
+
+        return new CFG(nonTerm, term, prods, startSym);
+    }
+
     public CFG EPlusE() {
         String startSymbol = "S";
         String[] nonTerm = {"S", "E"};

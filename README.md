@@ -15,6 +15,8 @@ Programming Language: Java
 <br>
 IDE: VSCode Win10
 <br>
+VSCode Extension: I used Graphviz (dot) language support for Visual Studio Code by João Pinto to render my graphViz files inside VSCode
+<br>
 Libraries: 
 - java.util (ArrayList, Set, HashSet, TimeUnit) - basic data structures
 - org.junit.jupiter.api (Assertions, BeforeEach, Test, Timeout) - JUnit 5 Testing (I think you will need to download JUnit 5 to run tests properly)
@@ -71,6 +73,8 @@ ___
 - removeUnitProds() : removes unit productions
 - removeEmptyProds() : removes empty productions
 - produceProdsWithoutEmpties() : produces all combinations of a production with the empty productions removed
+- findEmptyProds() : finds all the productions that outputs nothing
+- fidnEmptyProds() : given a list of empty productions creates and returns a set of strings which are the nonterminals of those productions
 - replaceTerminals() : replaces terminals with a standin nonterminal
 - splitProds() : split up productions to have a max length of two
 - hasAnEmptyProd() : checks if an production has an empty production
@@ -83,4 +87,5 @@ Currently I have not found any bugs yet, everything seems to be in working order
 ___
 **Testing**
 <br>
+I did testing with the JUnit5 Library creating JUnit tests for all my public methods
 ___

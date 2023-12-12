@@ -188,17 +188,23 @@ public class CFGTest {
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
     public void convertToCNFPalindromeTest() {
-        this.palindrome.replaceTerminals();
-        //this.palindrome.removeEmptyProds();
-        this.palindrome.removeEmptyProdsV2();
-        this.palindrome.removeUnitProds();
-        this.palindrome.splitProds();
+        CFG expected = examples.palindromeCNF_CFG();
+        this.palindrome.convertToCNF();
+        CFG actual = this.palindrome;
+        assertEquals(expected, actual);
     }
 
     @Test
     @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
     public void printPalindromeCFG() {
         System.out.println(examples.palindromeCFG());
+    }
+
+    @Test
+    @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
+    public void printCNFPalindrome() {
+        this.palindrome.convertToCNF();
+        System.out.println(this.palindrome);
     }
 
     @Test

@@ -122,13 +122,22 @@ public class CFG {
     //Methods to convert to CNF
     
     public void convertToCNF() {
+        ArrayList<Production> emptyProds = findEmptyProds();
         replaceTerminals();
         removeUnitProds();
-        removeEmptyProds();
+        boolean needMoreWork = removeEmptyProdsV2(emptyProds);
+        while (needMoreWork) {
+            needMoreWork = removeUnitProds();
+            if (needMoreWork) {
+                needMoreWork = removeEmptyProdsV2(emptyProds);
+            }
+        }
+        
         splitProds();
     }
 
-    public void removeUnitProds() {
+    private boolean removeUnitProds() {
+        boolean addedProduction = false;
         ArrayList<Production> newProds = new ArrayList<Production>();
         ArrayList<Production> prodsToRemove = new ArrayList<Production>();
         for (Production production : this.productions) {
@@ -148,12 +157,21 @@ public class CFG {
                 prodsToRemove.add(production);
             }
         }
+
+        ArrayList<Production> noDupes = new ArrayList<Production>();
+        for (Production prod : newProds) {
+            if (!this.productions.contains(prod)) {
+                noDupes.add(prod);
+            }
+        }
+
         this.productions.removeAll(prodsToRemove);
-        this.productions.addAll(newProds);
+        addedProduction = this.productions.addAll(noDupes);
+        return addedProduction;
     }
 
-    //need to fix this to work properly with productions that can lead to many empty productions
-    public void removeEmptyProds() {
+    /*
+    private void removeEmptyProds() {
         //Find all empty productions
         ArrayList<Production> emptyProdsToDel = new ArrayList<Production>();
         Set<String> emptyProds = new HashSet<String>();
@@ -188,33 +206,23 @@ public class CFG {
                 newProds.add(newProd);
             }
         }
-        for (Production prod : emptyProdsToDel) {
-            this.productions.remove(prod);
-        }
-        for (Production prod : newProds) {
-            this.productions.add(prod);
-        }
+        this.productions.removeAll(emptyProdsToDel);
+        this.productions.addAll(newProds);
     }
+     */
+    
 
-    public void removeEmptyProdsV2() {
+    private boolean removeEmptyProdsV2(ArrayList<Production> emptyProds) {
+        boolean addedProduction = false;
         ArrayList<Production> newProds = new ArrayList<Production>();
-         //Find all empty productions
-        ArrayList<Production> emptyProdsToDel = new ArrayList<Production>();
-        Set<String> emptyProds = new HashSet<String>();
-        for(Production production : this.productions) {
-           String nonTerminal = production.getNonTerminal();
-           ArrayList<String> output = production.getOutput();
-           boolean isEmptyProd = output.size() == 0;
-           if (isEmptyProd) {
-               emptyProds.add(nonTerminal);
-               emptyProdsToDel.add(production);
-           }
-        }
+
+        ArrayList<Production> emptyProdsToDel = emptyProds;
+        Set<String> emptyProdsNonTerm = getEmptyProdsNonTerms(emptyProds);
 
         //Remove empty prods and fix other prods
         for (Production production : this.productions) {
-            if (hasAnEmptyProd(production, emptyProds)) {
-                ArrayList<Production> prodsWithoutEmpties = produceProdsWithoutEmpties(production, 0, emptyProds);
+            if (hasAnEmptyProd(production, emptyProdsNonTerm)) {
+                ArrayList<Production> prodsWithoutEmpties = produceProdsWithoutEmpties(production, 0, emptyProdsNonTerm);
                 newProds.addAll(prodsWithoutEmpties);
             }
         }
@@ -224,12 +232,31 @@ public class CFG {
                 noDupes.add(prod);
             }
         }
-        for (Production prod : noDupes) {
-            this.productions.add(prod);
+
+        addedProduction = this.productions.addAll(noDupes);
+        this.productions.removeAll(emptyProdsToDel);
+
+        return addedProduction;
+    }
+
+    private ArrayList<Production> findEmptyProds() {
+        ArrayList<Production> emptyProds = new ArrayList<Production>();
+        for(Production production : this.productions) {
+            ArrayList<String> output = production.getOutput();
+            boolean isEmptyProd = output.size() == 0;
+            if (isEmptyProd) {
+                emptyProds.add(production);
+            }
         }
-        for (Production prod : emptyProdsToDel) {
-            this.productions.remove(prod);
+        return emptyProds;
+    }
+
+    private Set<String> getEmptyProdsNonTerms(ArrayList<Production> emptyProds) {
+        Set<String> emptyProdsNonTerms = new HashSet<String>();
+        for(Production production : emptyProds) {
+           emptyProdsNonTerms.add(production.getNonTerminal());
         }
+        return emptyProdsNonTerms;
     }
 
     private static ArrayList<Production> produceProdsWithoutEmpties(Production prodToCheck, Integer index, Set<String> emptyProds) {
@@ -243,9 +270,9 @@ public class CFG {
         }
         if (checkIdx>=output.size()) return resultingProds;
         if (emptyProds.contains(output.get(checkIdx))) {
-            ArrayList<String> clone1 = (ArrayList<String>) output.clone();
+            ArrayList<String> clone1 = (ArrayList<String>) output.clone(); //should always cast safely
             clone1.remove(checkIdx);
-            ArrayList<String> clone2 = (ArrayList<String>) output.clone();
+            ArrayList<String> clone2 = (ArrayList<String>) output.clone(); //should always cast safely
             Production removedEmpty = new Production(nonTerm, clone1);
             Production notRemoved = new Production(nonTerm, clone2);
             resultingProds.add(removedEmpty);
@@ -323,7 +350,9 @@ public class CFG {
         return false;
     }
 
-    private boolean isUnitProd(Production production) {
+    
+/* 
+private boolean hasMoreUnitProds() {
             if (production.getOutput().size() == 1) {
                 String out = production.getOutput().get(0);
                 if (!this.terminals.contains(out)) {
@@ -333,7 +362,16 @@ public class CFG {
             return false;
         }
 
-/* 
+    private boolean hasMoreEmptyProds(ArrayList<Production> emptyProds) {
+        boolean hasMore = false;
+        Set<String> emptyProdNonTerms = getEmptyProdsNonTerms(emptyProds);
+        for (Production prod : this.productions) {
+            if ((prod.getOutput().size()==1) && ())
+        }
+        return hasMore;
+    }
+
+
     private boolean isTerminalProd(Production production) {
         if (production.getOutput().size() == 1) {
             String out = production.getOutput().get(0);
@@ -398,6 +436,21 @@ public class CFG {
             output = output + letter;
         }
         return output;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof CFG) {
+            CFG cfg = (CFG) o;
+            boolean equalNonTerminals = this.nonTerminals.equals(cfg.getNonTerminals());
+            boolean equalTerminals = this.terminals.equals(cfg.getTerminals());
+            boolean equalProductions = this.productions.equals(cfg.getProductions());
+            boolean equalStartSymbol = this.startSymbol.equals(cfg.getStartSymbol());
+            if (equalNonTerminals && equalTerminals && equalProductions && equalStartSymbol) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
