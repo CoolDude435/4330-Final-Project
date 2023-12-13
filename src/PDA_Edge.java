@@ -65,8 +65,8 @@ public class PDA_Edge {
         } else {
             stackAction = "+";
         }
-        String output = "Input: " + this.input + " Start: " + this.startState + "StackAction: " + stackAction + 
-                        " StackUpdate: " + this.stackUpdate + " End: " + this.destState;
+        String output = "Input: " + this.input + " Start: " + this.startState +  " StackAction: " + stackAction + 
+                        " StackUpdate: " + this.stackUpdate + " Dest: " + this.destState;
         return output;
     }
 }

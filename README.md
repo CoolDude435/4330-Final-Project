@@ -41,6 +41,12 @@ ___
 *Production.java* - datatype for the productions in CFGs
 <br>
 *StackAction.java* - enums for what happens to the stack in PDAs
+<br>
+*PDA_EdgeTest.java* - Class to test PDA_Edge.java methods
+<br>
+*ProductionTest.java* - Class to test Production.java methods
+<br>
+*ViewableExamples.java* - this class isn't a test class, but rather examples you can run(by running a test method) to see some functionality of my program easier some of them outputs stuff to your debug console(on VSCode) while others creates example graphViz files you can render, I use the plugin mentioned above to easily render them in VSCode
 ___
 **Required Functions**
 <br>

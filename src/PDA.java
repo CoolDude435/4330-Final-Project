@@ -72,4 +72,38 @@ public class PDA {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        String output;
+        String lineSeperator = System.getProperty("line.separator");
+        String states = "States: ";
+        for (Integer state : this.states) {
+            states = states + state + ", ";
+        }
+        states = states + lineSeperator;
+        String inputAlphabet = "InputAlphabet: ";
+        for (String input : this.inputAlphabet) {
+            inputAlphabet = inputAlphabet + input + ", ";
+        }
+        inputAlphabet = inputAlphabet + lineSeperator;
+        String stackAlphabet = "StackAlphabet: ";
+        for (String stack : this.stackAlphabet) {
+            stackAlphabet = stackAlphabet + stack + ", ";
+        }
+        stackAlphabet = stackAlphabet + lineSeperator;
+        String edges = "Edges: " + lineSeperator;
+        for (PDA_Edge edge : this.edges) {
+            edges = edges + edge + lineSeperator;
+        }
+        String epsilonTransitions = "EpsilonTransitions: " + lineSeperator;
+        for (PDA_Edge epsilonTran : this.epsilonTransitions) {
+            epsilonTransitions = epsilonTransitions + epsilonTran + lineSeperator;
+        }
+        String startState = "StartState: " + this.startState + lineSeperator;
+        String finalState = "FinalState: " + this.finalState + lineSeperator;
+        String stackSymbol = "StackSymbol: ⊥";
+        output = states + inputAlphabet + stackAlphabet + edges + epsilonTransitions + startState + finalState + stackSymbol;
+        return output;
+    }
 }

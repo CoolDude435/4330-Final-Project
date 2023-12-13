@@ -1,2 +1,69 @@
 CFG to PDA Test - Palindrome
 With this CFG
+
+NonTerminals: S
+Terminals: a, b
+Productions:
+S -> a S a
+S -> b S b
+S ->
+StartSymbol: S
+
+converting it to a PDA gives this PDA
+
+States: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+InputAlphabet: a, b
+StackAlphabet: a, b, S, ⊥
+Edges: 
+Input: a Start: 2 StackAction: - StackUpdate: a Dest: 2
+Input: b Start: 2 StackAction: - StackUpdate: b Dest: 2
+EpsilonTransitions: 
+Input:  Start: 0 StackAction: + StackUpdate: ⊥ Dest: 1
+Input:  Start: 1 StackAction: + StackUpdate: S Dest: 2
+Input:  Start: 2 StackAction: - StackUpdate: ⊥ Dest: 3
+Input:  Start: 2 StackAction: - StackUpdate: S Dest: 4
+Input:  Start: 4 StackAction: + StackUpdate: a Dest: 5
+Input:  Start: 5 StackAction: + StackUpdate: S Dest: 6
+Input:  Start: 6 StackAction: + StackUpdate: a Dest: 2
+Input:  Start: 2 StackAction: - StackUpdate: S Dest: 7
+Input:  Start: 7 StackAction: + StackUpdate: b Dest: 8
+Input:  Start: 8 StackAction: + StackUpdate: S Dest: 9
+Input:  Start: 9 StackAction: + StackUpdate: b Dest: 2
+Input:  Start: 2 StackAction: - StackUpdate: S Dest: 2
+StartState: 0
+FinalState: 3
+StackSymbol: ⊥
+
+--------------------------------------------------------------------------------------------------------------
+
+PDA to graphViz file - Palindrome
+With the same PDA above converting it to a graphViz file
+gives Palindrome.gv which can be found in my src files
+You can either render it yourself or use the VSCode
+plugin mentioned in my README
+
+--------------------------------------------------------------------------------------------------------------
+
+CFG to CNF - Palindrome
+With the palindrome CFG from the first section
+converting it to CNF gives this new CFG
+
+NonTerminals: A, B, S, C, D
+Terminals: a, b
+Productions:
+A -> a
+B -> b
+S -> A A
+S -> B B
+S -> A C
+C -> S A
+S -> B D
+D -> S B
+StartSymbol: S
+
+--------------------------------------------------------------------------------------------------------------
+
+If you want to look at more examples you can check out the ViewableExamples.java file which includes
+tests you can run to output either to your console or create a graphViz file
+
+You can also run my tests to see they all past if you want.
